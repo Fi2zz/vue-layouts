@@ -1,0 +1,47 @@
+import { px2vw } from "@/px2vw";
+export interface EdgeInsets {
+  top?: number | string;
+  right?: number | string;
+  bottom?: number | string;
+  left?: number | string;
+  all?: number | string;
+  horizontal?: number | string;
+  vertical?: number | string;
+}
+
+export function EdgeInsets(edgeInsets: EdgeInsets): EdgeInsets {
+  if (edgeInsets.all !== undefined) {
+    return {
+      top: edgeInsets.all,
+      right: edgeInsets.all,
+      bottom: edgeInsets.all,
+      left: edgeInsets.all,
+    };
+  }
+  const { top, right, bottom, left, horizontal, vertical } = edgeInsets;
+  return {
+    top: top ?? vertical ?? 0,
+    right: right ?? horizontal ?? 0,
+    bottom: bottom ?? vertical ?? 0,
+    left: left ?? horizontal ?? 0,
+  };
+}
+
+export function edgeInsetsToStyle(
+  edgeInsets: EdgeInsets,
+  type: "margin" | "padding"
+) {
+  if (!edgeInsets) return {};
+  const { top, right, bottom, left } = EdgeInsets(edgeInsets);
+  return {
+    [`${type}Top`]: px2vw(top as number),
+    [`${type}Right`]: px2vw(right as number),
+    [`${type}Bottom`]: px2vw(bottom as number),
+    [`${type}Left`]: px2vw(left as number),
+  };
+}
+
+export const paddingToStyle = (value?: EdgeInsets) =>
+  edgeInsetsToStyle(value ?? {}, "padding");
+export const marginToStyle = (value?: EdgeInsets) =>
+  edgeInsetsToStyle(value ?? {}, "margin");
