@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import { px2vw } from "@/px2vw";
+import { px2vw } from "./px2vw";
 import { computed, onUnmounted, ref, useAttrs, CSSProperties } from "vue";
-import type { EdgeInsets } from "@/EdgeInsets";
+import type { EdgeInsets } from "./EdgeInsets";
 type Style = CSSProperties;
 
 interface Props {

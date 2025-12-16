@@ -87,6 +87,7 @@ const stackStyle = computed((): CSSProperties => {
     direction: props.textDirection,
     width: px2vw(props.width),
     height: px2vw(props.height),
+    boxSizing: "border-box",
     ...props.style,
   };
 });
@@ -104,11 +105,6 @@ defineExpose({
 </script>
 
 <style scoped>
-.flutter-stack {
-  box-sizing: border-box;
-}
-
-/* 确保子组件可以正确定位 */
 .flutter-stack > * {
   flex-shrink: 0;
 }

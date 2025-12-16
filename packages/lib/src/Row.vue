@@ -6,15 +6,14 @@
     :wrap="wrap"
     :gap="gap"
     :as="as"
-    :expanded="expanded"
-    :size="size">
+    :expanded="expanded">
     <slot />
   </FlexBox>
 </template>
 
 <script setup lang="ts">
 import FlexBox from "./FlexBox.vue";
-import { FlexBoxProps } from "./Flex";
+import { FlexBoxProps } from "./FlexProps";
 withDefaults(defineProps<FlexBoxProps>(), {
   mainAxisAlignment: "start",
   crossAxisAlignment: "center",

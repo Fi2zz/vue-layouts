@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { textStyleToStyle, TextStyle } from "@/TextStyle";
+import { textStyleToStyle, TextStyle } from "./TextStyle";
 import { computed } from "vue";
 import type { BoxConstraints } from "./BoxConstraints";
 import { boxConstraintsToStyle } from "./BoxConstraints";
@@ -19,8 +19,8 @@ import type { EdgeInsets } from "./EdgeInsets";
 import { marginToStyle, paddingToStyle } from "./EdgeInsets";
 import { Size, sizeToStyle } from "./Size";
 import { CSSProperties } from "vue";
-import { flexAlignmentToStyle, type FlexAlignment } from "./Flex";
-import { PositionProps, positionToStyle } from "@/Position";
+import { flexAlignmentToStyle, type FlexAlignment } from "./FlexProps";
+import { PositionProps, positionToStyle } from "./Position";
 
 interface Props {
   width?: number | string;
@@ -33,7 +33,6 @@ interface Props {
   clipBehavior?: "none" | "hardEdge" | "antiAlias" | string;
   transform?: string;
   constraints?: BoxConstraints;
-  size?: Size;
   textStyle?: ReturnType<typeof TextStyle>;
   noFlex?: boolean;
   /**
@@ -79,7 +78,7 @@ const computedStyle = computed(() => {
     });
   }
 
-  const size = (props.size as unknown as Size) ?? Size(props);
+  const size = Size(props);
   Object.assign(style, sizeToStyle(size));
   Object.assign(style, boxConstraintsToStyle(props.constraints));
   Object.assign(style, paddingToStyle(props.padding));

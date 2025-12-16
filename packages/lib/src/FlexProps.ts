@@ -1,5 +1,4 @@
-import { type Size } from "@/Size";
-import { BoxConstraints } from "@/BoxConstraints";
+import { BoxConstraints } from "./BoxConstraints";
 export type FlexAlignment = keyof typeof FlexAlignment;
 // 对齐
 const FlexAlignment = {
@@ -37,8 +36,7 @@ export const MainAxisAlignment = {
   spaceEvenly: "space-evenly",
 } as const;
 
-export // 定义 Props 接口
-type FlexBoxProps = {
+export type FlexBoxProps = {
   // 主轴方向 (类似 Flutter 的 Axis)
   direction?: "row" | "column" | "row-reverse" | "column-reverse" | string;
   mainAxisAlignment?: MainAxisAlignment;
@@ -50,7 +48,6 @@ type FlexBoxProps = {
   // 是否填充可用空间
   expanded?: boolean;
   as?: string;
-  size?: Size;
   constraints?: BoxConstraints;
 };
 

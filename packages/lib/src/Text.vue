@@ -12,7 +12,7 @@
 import { computed } from "vue";
 import { px2vw } from "./px2vw";
 import { TextStyle, textStyleToStyle } from "./TextStyle";
-import { isUndefined } from "lodash-es";
+import { isUndefined } from "./utils";
 defineOptions({ inheritAttrs: false });
 interface TextProps {
   data?: string | number;
@@ -70,13 +70,11 @@ const handleClick = (event: MouseEvent) => {
   padding: 0;
   border: none;
   background: transparent;
-  /* 字体渲染优化 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   word-break: break-word;
   overflow-wrap: break-word;
-  /* 过渡效果 */
   transition: all 0.2s ease-in-out;
 }
 </style>

@@ -1,4 +1,4 @@
-import { px2vw } from "@/px2vw";
+import { px2vw } from "./px2vw";
 export interface EdgeInsets {
   top?: number | string;
   right?: number | string;
@@ -28,8 +28,8 @@ export function EdgeInsets(edgeInsets: EdgeInsets): EdgeInsets {
 }
 
 export function edgeInsetsToStyle(
-  edgeInsets: EdgeInsets,
-  type: "margin" | "padding"
+  type: "margin" | "padding",
+  edgeInsets: EdgeInsets | undefined
 ) {
   if (!edgeInsets) return {};
   const { top, right, bottom, left } = EdgeInsets(edgeInsets);
@@ -42,6 +42,6 @@ export function edgeInsetsToStyle(
 }
 
 export const paddingToStyle = (value?: EdgeInsets) =>
-  edgeInsetsToStyle(value ?? {}, "padding");
+  edgeInsetsToStyle("padding", value);
 export const marginToStyle = (value?: EdgeInsets) =>
-  edgeInsetsToStyle(value ?? {}, "margin");
+  edgeInsetsToStyle("margin", value);

@@ -5,18 +5,17 @@
 </template>
 
 <script setup lang="ts">
-import { px2vw } from "@/px2vw";
+import { px2vw } from "./px2vw";
 import { computed, CSSProperties } from "vue";
 import {
   MainAxisAlignment,
   FlexBoxProps,
   FlexBoxAlignMap,
   FlexBoxJustifyMap,
-} from "@/Flex";
-import { CrossAxisAlignment } from "@/Flex";
-import { sizeToStyle } from "@/Size";
+} from "./FlexProps";
+import { CrossAxisAlignment } from "./FlexProps";
 import { useAttrs } from "vue";
-import { boxConstraintsToStyle } from "@/BoxConstraints";
+import { boxConstraintsToStyle } from "./BoxConstraints";
 
 const attrs = useAttrs();
 const props = withDefaults(defineProps<FlexBoxProps>(), {
@@ -54,7 +53,7 @@ const flexStyles = computed(() => {
     styles.flex = "1";
     styles.width = "100%";
     styles.height = "100%";
-  } else if (props.size) Object.assign(styles, sizeToStyle(props.size));
+  }
 
   if (props.constraints)
     Object.assign(styles, boxConstraintsToStyle(props.constraints));

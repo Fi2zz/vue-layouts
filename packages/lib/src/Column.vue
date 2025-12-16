@@ -5,15 +5,13 @@
     :cross-axis-alignment="crossAxisAlignment"
     :wrap="wrap"
     :gap="gap"
-    :expanded="expanded"
-    :size="size"
-    >
+    :expanded="expanded">
     <slot />
   </FlexBox>
 </template>
 
 <script setup lang="ts">
-import { FlexBoxProps } from "./Flex";
+import { FlexBoxProps } from "./FlexProps";
 import FlexBox from "./FlexBox.vue";
 defineProps<FlexBoxProps>();
 </script>

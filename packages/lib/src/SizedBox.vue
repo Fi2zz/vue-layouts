@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { px2vw } from "@/px2vw";
+import { px2vw } from "./px2vw";
 
 interface Props {
   width?: number | string;
@@ -43,28 +43,11 @@ const computedStyle = computed(() => {
     style.minWidth = "0";
     style.minHeight = "0";
   }
+
+  style.boxSizing = "border-box";
+  style.display = "flex";
+  style.position = "relative";
+  style.flexDirection = "column";
   return style;
 });
 </script>
-
-<style scoped>
-.sized-box {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
-
-.sized-box--expand {
-  flex: 1;
-}
-
-.sized-box--relative {
-  position: relative;
-}
-
-.sized-box--shrink {
-  flex-shrink: 1;
-  min-width: 0;
-  min-height: 0;
-}
-</style>
