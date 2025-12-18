@@ -1,0 +1,26 @@
+.demo-group .markdown-body {
+  display: none !important;
+}
+
+.demo-group {
+  border: 1px solid var(--vp-c-divider) !important;
+  border-radius: 8px;
+  padding: 16px !important;
+  margin-bottom: 16px !important;
+  background-color: var(--vp-c-bg-soft);
+}
+
+.demo-group h3 {
+  margin-top: 0 !important;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Ensure demos have some space */
+.demo-box {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+}
