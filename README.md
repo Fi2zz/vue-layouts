@@ -96,6 +96,9 @@ import { Container, Center, Text, Column, SizedBox } from "fluekit";
 
 Detailed documentation and examples are available in the `packages/docs` directory or deployed via GitHub Pages.
 
+- **Online Documentation**: [https://fi2zz.github.io/fluekit/](https://fi2zz.github.io/fluekit/)
+- **Source Code**: [packages/docs](packages/docs)
+
 ## 📄 License
 
 MIT
