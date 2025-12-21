@@ -30,7 +30,7 @@ export * from "./BoxConstraints";
 export * from "./BoxDecoration";
 export * from "./EdgeInsets";
 export * from "./FlexProps";
-export { FlexAlignment as Alignment } from "./FlexProps";
+export { Alignment as Alignment } from "./FlexProps";
 export * from "./Size";
 export * from "./TextStyle";
 export * from "./useOpacity";

@@ -120,7 +120,7 @@ export type ImageProvider = string;
 export const NetworkImage = (url: string) => url;
 export const AssetImage = (url: string) => url;
 
-export interface DecorationImage {
+export interface DecorationImageProps {
   image: ImageProvider;
   fit?: BoxFit;
   alignment?: BoxAlignment;
@@ -131,23 +131,27 @@ export interface DecorationImage {
   origin?: string;
 }
 
-export function DecorationImage(props: DecorationImage): DecorationImage {
-  return props as DecorationImage;
+export type DecorationImage = DecorationImageProps;
+
+export function DecorationImage(props: DecorationImageProps): DecorationImageProps {
+  return props as DecorationImageProps;
 }
 
 /**
  * BoxDecoration接口定义
  */
-export type BoxDecoration = {
+export type BoxDecorationProps = {
   color?: string;
   border?: Borders;
   borderRadius?: BorderRadius;
   boxShadow?: BoxShadow | BoxShadow[];
   gradient?: string;
-  image?: DecorationImage;
+  image?: DecorationImageProps;
   overflow?: Overflow;
   opacity?: number | string;
 };
+
+export type BoxDecoration = BoxDecorationProps;
 
 // 简单的 BoxShadow 接口定义，之前缺失
 export interface BoxShadow {
@@ -161,7 +165,7 @@ export interface BoxShadow {
 const isGradient = (url: string) =>
   /^(linear|radial|conic|repeating-linear|repeating-radial)-gradient\(/.test(url);
 
-export function decorationImageToStyle(di: DecorationImage): CSSProperties {
+export function decorationImageToStyle(di: DecorationImageProps): CSSProperties {
   if (!di) return {};
   const css: CSSProperties = {};
   const image = normalizeSrc(di.image);
@@ -201,7 +205,7 @@ export function decorationImageToStyle(di: DecorationImage): CSSProperties {
   return css;
 }
 
-export function boxDecorationToStyle(decoration?: BoxDecoration): CSSProperties {
+export function boxDecorationToStyle(decoration?: BoxDecorationProps): CSSProperties {
   if (!decoration) return {};
   const { color, border, borderRadius, boxShadow, gradient, image, overflow, opacity } = decoration;
 
@@ -239,8 +243,8 @@ export function boxDecorationToStyle(decoration?: BoxDecoration): CSSProperties 
   return style;
 }
 
-export function BoxDecoration(props?: BoxDecoration): BoxDecoration {
-  return props as BoxDecoration;
+export function BoxDecoration(props?: BoxDecorationProps): BoxDecorationProps {
+  return props as BoxDecorationProps;
 }
 
 // 简单的辅助函数，实际使用可能更复杂

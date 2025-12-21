@@ -13,7 +13,7 @@ import type { BoxDecoration } from "./BoxDecoration";
 import { boxDecorationToStyle } from "./BoxDecoration";
 import type { EdgeInsets } from "./EdgeInsets";
 import { marginToStyle, paddingToStyle } from "./EdgeInsets";
-import { alignmentToOrigin, alignmentToStyle, type FlexAlignment } from "./FlexProps";
+import { alignmentToOrigin, alignmentToStyle, type Alignment } from "./FlexProps";
 import { sizeToStyle } from "./Size";
 import { useGestureEvents, useGestureStyle } from "./useGesture";
 import { useSafeAttrs } from "./useSafeAttrs";
@@ -28,10 +28,10 @@ interface Props {
   decoration?: BoxDecoration;
   foregroundDecoration?: BoxDecoration;
   color?: string;
-  alignment?: FlexAlignment | string;
+  alignment?: Alignment | string;
   clipBehavior?: "none" | "hardEdge" | "antiAlias" | string;
   transform?: string;
-  transformAlignment?: FlexAlignment | string;
+  transformAlignment?: Alignment | string;
   constraints?: BoxConstraints;
   duration?: number;
   curve?: string;
@@ -60,7 +60,7 @@ const computedStyle = computed(() => {
     ...paddingToStyle(props.padding),
     ...marginToStyle(props.margin),
     ...boxDecorationToStyle(props.decoration),
-    ...alignmentToStyle(props.alignment as FlexAlignment, "column"),
+    ...alignmentToStyle(props.alignment as Alignment, "column"),
     ...boxConstraintsToStyle(props.constraints),
     ...gestureStyle,
     transition: transitionStyle.value,
@@ -73,7 +73,7 @@ const computedStyle = computed(() => {
   if (props.transform) {
     baseStyle.transform = props.transform;
     if (props.transformAlignment) {
-      baseStyle.transformOrigin = alignmentToOrigin(props.transformAlignment as FlexAlignment);
+      baseStyle.transformOrigin = alignmentToOrigin(props.transformAlignment as Alignment);
     }
   }
 

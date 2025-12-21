@@ -1,10 +1,13 @@
 import { px2vw } from "./px2vw";
 
-export interface Size {
+export interface SizeType {
   width?: number | string;
   height?: number | string;
 }
-export function Size(value: Size | string | number): Size | undefined {
+
+export type Size = SizeType;
+
+export function Size(value: SizeType | string | number): SizeType | undefined {
   if (!value) return undefined;
   if (typeof value === "number" || typeof value === "string")
     return { width: value, height: value };
@@ -12,7 +15,7 @@ export function Size(value: Size | string | number): Size | undefined {
   return { width, height };
 }
 
-export function sizeToStyle(size?: Size) {
+export function sizeToStyle(size?: SizeType) {
   if (!size) return;
   const { width, height } = size;
   return {

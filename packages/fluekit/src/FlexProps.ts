@@ -1,17 +1,17 @@
-import { BoxConstraints } from "./BoxConstraints";
+import { BoxConstraintsProps } from "./BoxConstraints";
 
 // ==========================================================================================
 // Alignment
 // ==========================================================================================
 
-export type FlexAlignment = keyof typeof FlexAlignment;
+export type Alignment = keyof typeof Alignment;
 
 /**
  * FlexAlignment 定义
  * 对应 Flutter 的 Alignment 常量
  * 用于 Container 等组件的 alignment 属性
  */
-export const FlexAlignment = {
+export const Alignment = {
   center: { justifyContent: "center", alignItems: "center" },
   topLeft: { justifyContent: "flex-start", alignItems: "flex-start" },
   topCenter: { justifyContent: "center", alignItems: "flex-start" },
@@ -23,8 +23,8 @@ export const FlexAlignment = {
   bottomRight: { justifyContent: "flex-end", alignItems: "flex-end" },
 } as const;
 
-export function alignmentToStyle(alignment: FlexAlignment, direction: "row" | "column" = "row") {
-  const style = FlexAlignment[alignment];
+export function alignmentToStyle(alignment: Alignment, direction: "row" | "column" = "row") {
+  const style = Alignment[alignment];
   if (!style) return {};
 
   if (direction === "row") return style;
@@ -35,7 +35,7 @@ export function alignmentToStyle(alignment: FlexAlignment, direction: "row" | "c
   };
 }
 
-export function alignmentToOrigin(alignment: FlexAlignment) {
+export function alignmentToOrigin(alignment: Alignment) {
   const map: Record<string, string> = {
     center: "center center",
     topLeft: "left top",
@@ -98,7 +98,7 @@ export type FlexBoxProps = {
   // 是否填充可用空间
   expanded?: boolean;
   as?: string;
-  constraints?: BoxConstraints;
+  constraints?: BoxConstraintsProps;
 };
 
 type Preset = Record<string, string>;

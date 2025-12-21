@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue";
-import { alignmentToOrigin, type FlexAlignment } from "./FlexProps";
+import { alignmentToOrigin, type Alignment } from "./FlexProps";
 
 defineOptions({ inheritAttrs: false });
 
@@ -22,7 +22,7 @@ interface Props {
    * 变换的原点对齐方式
    * 对应 Flutter 的 alignment
    */
-  alignment?: FlexAlignment;
+  alignment?: Alignment;
 
   /**
    * 具体的原点偏移 (CSS transform-origin)

@@ -1,15 +1,18 @@
 import { CSSProperties } from "vue";
 import { px2vw } from "./px2vw";
 
-export interface BoxConstraints {
+export interface BoxConstraintsProps {
   minWidth?: number;
   maxWidth?: number;
   minHeight?: number;
   maxHeight?: number;
 }
+
+export type BoxConstraints = BoxConstraintsProps;
+
 const toVal = (v: number) => (v === Infinity ? undefined : v);
 
-export function BoxConstraints(props: BoxConstraints = {}): BoxConstraints {
+export function BoxConstraints(props: BoxConstraintsProps = {}): BoxConstraintsProps {
   const minWidth = Math.max(0, props.minWidth ?? 0);
   const minHeight = Math.max(0, props.minHeight ?? 0);
   const maxWidth = Math.max(minWidth, props.maxWidth ?? Infinity);
@@ -23,7 +26,7 @@ export function BoxConstraints(props: BoxConstraints = {}): BoxConstraints {
   };
 }
 
-export function boxConstraintsToStyle(constraints?: BoxConstraints): CSSProperties {
+export function boxConstraintsToStyle(constraints?: BoxConstraintsProps): CSSProperties {
   const constraintsType = constraints ?? {};
 
   return {

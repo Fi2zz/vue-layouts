@@ -8,12 +8,12 @@
 
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue";
-import { type FlexAlignment, alignmentToStyle } from "./FlexProps";
+import { type Alignment, alignmentToStyle } from "./FlexProps";
 
 defineOptions({ inheritAttrs: false });
 
 interface Props {
-  alignment?: FlexAlignment;
+  alignment?: Alignment;
   widthFactor?: number;
   heightFactor?: number;
 }

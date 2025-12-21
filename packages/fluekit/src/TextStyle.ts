@@ -105,7 +105,7 @@ export interface TextShadow {
   blurRadius?: number;
 }
 
-export interface TextStyle {
+export interface TextStyleProps {
   inherit?: boolean;
   color?: string;
   backgroundColor?: string;
@@ -134,6 +134,8 @@ export interface TextStyle {
   overflow?: TextOverflow;
 }
 
+export type TextStyle = TextStyleProps;
+
 const _kColorForegroundWarning =
   "Cannot provide both a color and a foreground\n" +
   'The color argument is just a shorthand for "foreground: Paint()..color = color".';
@@ -145,7 +147,7 @@ const _kColorBackgroundWarning =
 /**
  * 验证 TextStyle 属性冲突
  */
-function validateTextStyle(style: TextStyle) {
+function validateTextStyle(style: TextStyleProps) {
   if (style.color && style.foreground) {
     console.warn(_kColorForegroundWarning);
   }
@@ -174,7 +176,7 @@ function buildFontFamily(
   return family;
 }
 
-export function toCSSStyle(props: TextStyle = {}): CSSProperties {
+export function toCSSStyle(props: TextStyleProps = {}): CSSProperties {
   validateTextStyle(props);
 
   const cssStyle: CSSProperties = {};
@@ -302,7 +304,10 @@ export function toCSSStyle(props: TextStyle = {}): CSSProperties {
   return cssStyle;
 }
 
-export function TextStyle(initial: TextStyle = {}, cloned: TextStyle = {}): TextStyle {
+export function TextStyle(
+  initial: TextStyleProps = {},
+  cloned: TextStyleProps = {},
+): TextStyleProps {
   const merged = {
     ...cloned,
     ...initial,

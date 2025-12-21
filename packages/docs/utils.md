@@ -108,7 +108,8 @@ Defines immutable insets (padding or margin).
 Supported object structure:
 
 ```typescript
-interface EdgeInsets {
+// Type Alias: type EdgeInsets = EdgeInsetsProps;
+interface EdgeInsetsProps {
   all?: number; // Uniform value
   horizontal?: number; // Horizontal (left + right)
   vertical?: number; // Vertical (top + bottom)
@@ -122,8 +123,34 @@ interface EdgeInsets {
 Usage examples:
 
 ```vue
-<Container :padding="{ all: 10 }" />
-<Container :margin="{ horizontal: 20, vertical: 10 }" />
+<script setup>
+import { EdgeInsets } from "fluekit";
+
+// 1. Uniform padding for all sides
+const allPadding = EdgeInsets({ all: 10 });
+
+// 2. Symmetric padding
+// horizontal = left + right
+// vertical = top + bottom
+const symmetricPadding = EdgeInsets({ horizontal: 20, vertical: 10 });
+
+// 3. Individual sides
+const onlyTop = EdgeInsets({ top: 15 });
+const mixed = EdgeInsets({ left: 10, right: 10, top: 20 });
+
+// 4. Override specific sides (later properties take precedence in object literal if passed raw,
+// but the helper logic handles 'all', 'horizontal', 'vertical' priority correctly)
+// Priority: all > horizontal/vertical > left/right/top/bottom
+</script>
+
+<template>
+  <Container :padding="allPadding">
+    <Text data="Content" />
+  </Container>
+
+  <!-- Direct object usage is also supported -->
+  <Container :margin="{ top: 10, bottom: 20 }" />
+</template>
 ```
 
 ### BorderRadius
@@ -133,7 +160,8 @@ Defines immutable border radii.
 Supported object structure:
 
 ```typescript
-type BorderRadius =
+// Type Alias: type BorderRadius = BorderRadiusType;
+type BorderRadiusType =
   | number
   | {
       all?: number;
@@ -147,8 +175,30 @@ type BorderRadius =
 Usage examples:
 
 ```vue
-<Container :decoration="{ borderRadius: 10 }" />
-<Container :decoration="{ borderRadius: { topLeft: 10, bottomRight: 10 } }" />
+<script setup>
+import { BorderRadius } from "fluekit";
+
+// 1. Circular radius for all corners (shorthand)
+const circular = BorderRadius(10); // same as { all: 10 }
+
+// 2. Specific corners
+const topRounded = BorderRadius({
+  topLeft: 10,
+  topRight: 10,
+});
+
+const diagonal = BorderRadius({
+  topLeft: 15,
+  bottomRight: 15,
+});
+
+// 3. Object literal with 'all'
+const allCorners = BorderRadius({ all: 8 });
+</script>
+
+<template>
+  <Container :decoration="{ color: 'blue', borderRadius: circular }" />
+</template>
 ```
 
 ### BoxConstraints
@@ -156,7 +206,8 @@ Usage examples:
 Defines immutable layout constraints.
 
 ```typescript
-interface BoxConstraints {
+// Type Alias: type BoxConstraints = BoxConstraintsProps;
+interface BoxConstraintsProps {
   minWidth?: number;
   maxWidth?: number;
   minHeight?: number;
@@ -164,12 +215,45 @@ interface BoxConstraints {
 }
 ```
 
+Usage examples:
+
+```vue
+<script setup>
+import { BoxConstraints } from "fluekit";
+
+// 1. Loose constraints (min = 0, max = specified)
+const loose = BoxConstraints({
+  maxWidth: 200,
+  maxHeight: 100,
+});
+
+// 2. Tight constraints (min = max)
+const tight = BoxConstraints({
+  minWidth: 100,
+  maxWidth: 100,
+  minHeight: 100,
+  maxHeight: 100,
+});
+
+// 3. Infinite constraints (default if not specified)
+// maxWidth: Infinity
+</script>
+
+<template>
+  <!-- Force child to be at least 100px wide -->
+  <Container :constraints="{ minWidth: 100 }">
+    <Text data="Small Text" />
+  </Container>
+</template>
+```
+
 ### TextStyle
 
 Defines the style of text, corresponding to Flutter's TextStyle.
 
 ```typescript
-interface TextStyle {
+// Type Alias: type TextStyle = TextStyleProps;
+interface TextStyleProps {
   color?: string;
   fontSize?: number;
   fontWeight?: FontWeight;
@@ -178,8 +262,49 @@ interface TextStyle {
   wordSpacing?: number;
   textBaseline?: TextBaseline;
   height?: number; // Line height
+  decoration?: TextDecoration;
   // ...
 }
+```
+
+Usage examples:
+
+```vue
+<script setup>
+import { TextStyle, FontWeight, TextDecoration } from "fluekit";
+
+// 1. Basic style
+const bodyText = TextStyle({
+  fontSize: 14,
+  color: "#333333",
+});
+
+// 2. Bold and italic
+const titleText = TextStyle({
+  fontSize: 24,
+  fontWeight: FontWeight.bold,
+  fontStyle: "italic",
+});
+
+// 3. Text with decoration (underline)
+const linkText = TextStyle({
+  color: "blue",
+  decoration: TextDecoration.underline,
+});
+
+// 4. Inheriting and overriding
+const errorText = TextStyle(
+  {
+    color: "red",
+    fontWeight: FontWeight.bold,
+  },
+  bodyText,
+); // bodyText properties are defaults, overwritten by first arg
+</script>
+
+<template>
+  <Text data="Hello World" :style="titleText" />
+</template>
 ```
 
 ### Border
@@ -200,6 +325,129 @@ interface Borders {
   right?: BorderSide;
   bottom?: BorderSide;
 }
+```
+
+Usage examples:
+
+```vue
+<script setup>
+import { Border } from "fluekit";
+
+// 1. Create a uniform border side
+const solidBlack = Border({ width: 1, color: "black" });
+const thickRed = Border({ width: 4, color: "red" });
+
+// 2. Dashed border
+const dashed = Border({ width: 1, color: "#999", style: "dashed" });
+</script>
+
+<template>
+  <!-- Uniform border -->
+  <Container :decoration="{ border: { all: solidBlack } }" />
+
+  <!-- Individual sides -->
+  <Container
+    :decoration="{
+      border: {
+        bottom: thickRed,
+        top: dashed,
+      },
+    }"
+  />
+</template>
+```
+
+### Size
+
+Defines a size with width and height.
+
+```typescript
+// Type Alias: type Size = SizeType;
+interface SizeType {
+  width?: number | string;
+  height?: number | string;
+}
+```
+
+Usage examples:
+
+```vue
+<script setup>
+import { Size } from "fluekit";
+
+// 1. Square size
+const square = Size(100); // { width: 100, height: 100 }
+
+// 2. Rectangular size
+const rect = Size({ width: 200, height: 100 });
+
+// 3. Using strings (e.g. percentages)
+const full = Size("100%");
+const responsive = Size({ width: "50%", height: 200 });
+</script>
+```
+
+### BoxDecoration
+
+Defines the decoration of a box.
+
+```typescript
+// Type Alias: type BoxDecoration = BoxDecorationProps;
+interface BoxDecorationProps {
+  color?: string;
+  border?: Borders;
+  borderRadius?: BorderRadius;
+  boxShadow?: BoxShadow | BoxShadow[];
+  gradient?: string;
+  image?: DecorationImage;
+  overflow?: Overflow;
+  opacity?: number | string;
+}
+```
+
+Usage examples:
+
+```vue
+<script setup>
+import { BoxDecoration, Border, BorderRadius, BoxShadow } from "fluekit";
+
+// 1. Simple colored box with rounded corners
+const cardDecoration = BoxDecoration({
+  color: "white",
+  borderRadius: BorderRadius(8),
+  boxShadow: {
+    color: "rgba(0,0,0,0.1)",
+    offset: { x: 0, y: 2 },
+    blurRadius: 4,
+  },
+});
+
+// 2. Circle with border
+const circleDecoration = BoxDecoration({
+  color: "red",
+  borderRadius: BorderRadius("50%"), // Fully rounded
+  border: { all: Border({ width: 2, color: "white" }) },
+});
+
+// 3. Gradient background
+const gradientDecoration = BoxDecoration({
+  gradient: "linear-gradient(to right, red, blue)",
+  borderRadius: 4,
+});
+
+// 4. Background Image
+const imageDecoration = BoxDecoration({
+  image: {
+    image: "https://example.com/bg.jpg",
+    fit: "cover",
+  },
+  borderRadius: 8,
+});
+</script>
+
+<template>
+  <Container :decoration="cardDecoration" :width="200" :height="100" />
+</template>
 ```
 
 ## Composition API (Hooks)
