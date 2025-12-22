@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from "vitest";
 import { mount } from "@vue/test-utils";
 import Container from "../Container.vue";
 import { setTransform } from "../px2vw";
-
+import { EdgeInsets } from "@/EdgeInsets";
 describe("Container", () => {
   beforeAll(() => {
     setTransform(false);
@@ -27,7 +27,7 @@ describe("Container", () => {
   it("renders with padding", () => {
     const wrapper = mount(Container, {
       props: {
-        padding: { all: 10 },
+        padding: EdgeInsets.all(10),
       },
     });
 

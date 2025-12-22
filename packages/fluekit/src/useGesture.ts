@@ -1,4 +1,4 @@
-import { ref, inject, provide, CSSProperties, PropType, SetupContext } from "vue";
+import { ref, inject, provide, CSSProperties, PropType, SetupContext, computed } from "vue";
 
 const GESTURE_HANDLED = Symbol("gesture_handled");
 
@@ -43,7 +43,6 @@ export function useGestures({ emit }: SetupContext) {
   const callbacks = {
     onTap: () => emit("tap"),
     onClick: (event: MouseEvent) => emit("click", event),
-    onDbClick: (event: MouseEvent) => emit("click", event),
     onDoubleTap: () => emit("double-tap"),
     onLongPress: () => emit("long-press"),
     onPanStart: (detail: GestureDetail) => emit("pan-start", detail),
@@ -60,7 +59,6 @@ export function useGestures({ emit }: SetupContext) {
     const delta = now - lastClickTime.value;
     if (delta < 300) {
       callbacks.onDoubleTap?.();
-      callbacks.onDbClick?.(e);
       lastClickTime.value = 0; // 重置
     } else {
       callbacks.onTap?.();
@@ -187,6 +185,8 @@ export function useGestures({ emit }: SetupContext) {
   return {
     onClick: handleClick,
     onMousedown: handleDown,
+    onMouseup: handleMouseUp,
+    onMousemove: handleMouseMove,
     onTouchstart: handleTouchStart,
     onTouchmove: handleTouchMove,
     onTouchend: handleTouchEnd,
@@ -196,6 +196,9 @@ export function useGestures({ emit }: SetupContext) {
 
 const S_EVENTS = Symbol("events");
 const S_BEHAVIOR = Symbol("behavior");
+const S_IGNORING = Symbol("ignoring");
+const S_IGNORING_SEMANTICS = Symbol("ignoringSemantics");
+
 export function useGestureStyle() {
   const behavior = inject<Behavior>(S_BEHAVIOR, "deferToChild");
   const style: CSSProperties = {};
@@ -216,4 +219,29 @@ export function useGestureEvents() {
 export function provideGesture(events: Events, behavior: Behavior) {
   provide(S_EVENTS, events);
   provide(S_BEHAVIOR, behavior);
+}
+
+export function provideIgnoring({ ignoring, ignoringSemantics }: any) {
+  provide(S_IGNORING, ignoring);
+  provide(S_IGNORING_SEMANTICS, ignoringSemantics);
+}
+
+export function useIgnoring() {
+  const ignoring = inject<boolean>(S_IGNORING, false);
+  const ignoringSemantics = inject<boolean>(S_IGNORING_SEMANTICS, false);
+  return { ignoring, ignoringSemantics };
+}
+
+export function noPointerEvents() {
+  const style: CSSProperties = {};
+  style.pointerEvents = "none";
+  return style;
+}
+
+export function useIgnoringStyle() {
+  const { ignoring } = useIgnoring();
+  return computed(() => {
+    if (ignoring) return noPointerEvents();
+    return {};
+  });
 }

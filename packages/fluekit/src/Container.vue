@@ -9,17 +9,18 @@
 import { computed } from "vue";
 import { useSafeAttrs } from "./useSafeAttrs";
 import type { BoxConstraints } from "./BoxConstraints";
-import { boxConstraintsToStyle } from "./BoxConstraints";
+import { boxConstraintsToStyle, isBoxConstraints } from "./BoxConstraints";
+import { validateInDev } from "./utils";
 defineOptions({ inheritAttrs: false });
 // 引入 BoxDecoration 类型与背景图构造工具
 import { CSSProperties } from "vue";
 import type { BoxDecoration } from "./BoxDecoration";
-import { boxDecorationToStyle } from "./BoxDecoration";
+import { boxDecorationToStyle, isBoxDecoration } from "./BoxDecoration";
 import type { EdgeInsets } from "./EdgeInsets";
-import { marginToStyle, paddingToStyle } from "./EdgeInsets";
+import { marginToStyle, paddingToStyle, isEdgeInsets } from "./EdgeInsets";
 import { Alignment, alignmentToFlex, alignmentToOrigin } from "./Alignment";
 import { sizeToStyle } from "./Size";
-import { useGestureEvents, useGestureStyle } from "./useGesture";
+import { useGestureEvents, useGestureStyle, useIgnoringStyle } from "./useGesture";
 
 interface Props {
   width?: number | string;
@@ -54,13 +55,7 @@ const isNegative = (val?: string | number) => {
 // Props 校验与约束逻辑
 // 对应 Flutter Container 的 assert 逻辑
 const validateProps = () => {
-  // 1. assert(margin == null || margin.isNonNegative)
-  if (props.margin) {
-    const { left, top, right, bottom } = props.margin;
-    if (isNegative(left) || isNegative(top) || isNegative(right) || isNegative(bottom)) {
-      console.warn("[Container] margin must be non-negative");
-    }
-  }
+  // margin 允许负值，所以移除非负性检查
 
   // 2. assert(padding == null || padding.isNonNegative)
   if (props.padding) {
@@ -81,10 +76,46 @@ const validateProps = () => {
   if (!props.decoration && props.clipBehavior !== "none") {
     console.warn("[Container] clipBehavior has no effect when decoration is null");
   }
+
+  // 5. assert(decoration must be created using BoxDecoration constructor)
+  if (props.decoration && !isBoxDecoration(props.decoration)) {
+    console.warn(
+      "[Container] decoration must be created using BoxDecoration constructor.\nExample: decoration=\"BoxDecoration({ color: 'red' })\"",
+    );
+  }
+
+  // 6. assert(foregroundDecoration must be created using BoxDecoration constructor)
+  if (props.foregroundDecoration && !isBoxDecoration(props.foregroundDecoration)) {
+    console.warn(
+      "[Container] foregroundDecoration must be created using BoxDecoration constructor.\nExample: foregroundDecoration=\"BoxDecoration({ color: 'red' })\"",
+    );
+  }
+
+  // 7. assert(padding must be created using EdgeInsets constructor)
+  if (props.padding && !isEdgeInsets(props.padding)) {
+    console.warn(
+      '[Container] padding must be created using EdgeInsets constructor.\nExample: padding="EdgeInsets.all(10)".',
+    );
+  }
+
+  // 8. assert(margin must be created using EdgeInsets constructor)
+  if (props.margin && !isEdgeInsets(props.margin)) {
+    console.warn(
+      '[Container] margin must be created using EdgeInsets constructor.\nExample: margin="EdgeInsets.symmetric({ vertical: 10 })".',
+    );
+  }
+
+  // 9. assert(constraints must be created using BoxConstraints constructor)
+  if (props.constraints && !isBoxConstraints(props.constraints)) {
+    console.warn(
+      '[Container] constraints must be created using BoxConstraints constructor.\nExample: constraints="BoxConstraints({ minWidth: 100 })".',
+    );
+  }
 };
 
-validateProps();
+validateInDev(validateProps);
 
+const ignoringStyle = useIgnoringStyle();
 /**
  * 计算最终样式
  * 中文说明：
@@ -145,6 +176,7 @@ const computedStyle = computed(() => {
     // 简单的抗锯齿处理，实际可能需要 clip-path
     style.borderRadius = style.borderRadius || "inherit";
   }
+  Object.assign(style, ignoringStyle.value);
   return style;
 });
 

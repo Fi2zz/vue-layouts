@@ -6,8 +6,15 @@
 
 <script setup lang="ts">
 import { computed, CSSProperties } from "vue";
-import { TextAlign, TextDirection, TextOverflow, TextStyle, toCSSStyle } from "./TextStyle";
-import { isUndefined } from "./utils";
+import {
+  TextAlign,
+  TextDirection,
+  TextOverflow,
+  TextStyle,
+  toCSSStyle,
+  isTextStyle,
+} from "./TextStyle";
+import { isUndefined, validateInDev } from "./utils";
 
 defineOptions({ inheritAttrs: false });
 
@@ -44,6 +51,18 @@ const data = computed(() => {
   if (!isUndefined(text) && text != null) return text.toString();
   return "";
 });
+
+// 校验 Text 属性
+const validateProps = () => {
+  // 1. assert(style must be created using TextStyle constructor)
+  if (props.style && !isTextStyle(props.style)) {
+    console.warn(
+      "[Text] style must be created using TextStyle constructor.\nExample: style=\"TextStyle({ color: \'red\', fontSize: 16 })\".",
+    );
+  }
+};
+
+validateInDev(validateProps);
 
 // 合并手势样式
 const gestureStyle = useGestureStyle();

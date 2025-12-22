@@ -10,6 +10,23 @@ export function isSymbol(value: any): value is symbol {
   return typeof value === "symbol";
 }
 
+/**
+ * 通用验证函数，仅在开发环境下执行验证逻辑
+ * @param validator 验证函数
+ * @param args 验证函数的参数
+ */
+
+export function validateInDev<T extends (...args: any[]) => any>(
+  validator: T,
+  ...args: Parameters<T>
+): ReturnType<T> | void {
+  // 只在开发环境下执行验证
+  //@ts-ignore
+  if (import.meta.env.DEV) {
+    validator(...args);
+  }
+}
+
 const PURE_NUMBER_REGEX = /^[+-]?(?:\d+\.?\d*|\.\d+)$/;
 const NUMBER_PX_REGEX = /^[+-]?(?:\d+\.?\d*|\.\d+)px$/;
 

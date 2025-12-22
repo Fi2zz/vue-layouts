@@ -20,16 +20,29 @@ export interface BoxShadowProps {
   blurStyle?: BlurStyle;
 }
 
-export type BoxShadow = BoxShadowProps;
+// 定义唯一符号标记
+const BOX_SHADOW_SYMBOL = Symbol("boxShadow");
 
-export function BoxShadow(props: BoxShadowProps = {}): BoxShadowProps {
+export type BoxShadow = BoxShadowProps & {
+  [BOX_SHADOW_SYMBOL]?: true;
+};
+
+export function BoxShadow(props: BoxShadowProps = {}): BoxShadow {
   return {
     color: props.color || "rgba(0, 0, 0, 0.2)",
     offset: props.offset || { x: 0, y: 0 },
     blurRadius: props.blurRadius || 0.0,
     spreadRadius: props.spreadRadius || 0.0,
     blurStyle: props.blurStyle || BlurStyle.normal,
+    [BOX_SHADOW_SYMBOL]: true as const,
   };
+}
+
+/**
+ * 类型守卫：检查对象是否通过 BoxShadow 构造函数创建
+ */
+export function isBoxShadow(value: any): value is BoxShadow {
+  return typeof value === "object" && value !== null && BOX_SHADOW_SYMBOL in value;
 }
 
 export function boxShadowToCSS(shadow: BoxShadowProps): string {

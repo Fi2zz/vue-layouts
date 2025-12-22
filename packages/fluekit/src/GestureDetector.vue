@@ -1,7 +1,7 @@
 <script lang="ts">
 import { cloneVNode, defineComponent, h, Text, type PropType, type SetupContext } from "vue";
 import { useChild } from "./useChildren";
-import { Behavior, events, provideGesture, useGestures } from "./useGesture";
+import { events, useGestures, Behavior, provideGesture } from "./useGesture";
 
 export default defineComponent({
   name: "GestureDetector",
@@ -16,6 +16,7 @@ export default defineComponent({
   setup(props, { slots, emit }) {
     const events = useGestures({ emit } as SetupContext);
     provideGesture(events, props.behavior);
+
     return () => {
       const child = useChild(slots.default);
       if (!child) return null;

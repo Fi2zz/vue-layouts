@@ -1,6 +1,9 @@
 import { CSSProperties } from "vue";
 import { px2vw } from "./px2vw";
 
+// 定义唯一符号标记
+const BOX_CONSTRAINTS_SYMBOL = Symbol("boxConstraints");
+
 export interface BoxConstraintsProps {
   minWidth?: number;
   maxWidth?: number;
@@ -8,11 +11,13 @@ export interface BoxConstraintsProps {
   maxHeight?: number;
 }
 
-export type BoxConstraints = BoxConstraintsProps;
+export type BoxConstraints = BoxConstraintsProps & {
+  [BOX_CONSTRAINTS_SYMBOL]?: true;
+};
 
 const toVal = (v: number) => (v === Infinity ? undefined : v);
 
-export function BoxConstraints(props: BoxConstraintsProps = {}): BoxConstraintsProps {
+export function BoxConstraints(props: BoxConstraintsProps = {}): BoxConstraints {
   const minWidth = Math.max(0, props.minWidth ?? 0);
   const minHeight = Math.max(0, props.minHeight ?? 0);
   const maxWidth = Math.max(minWidth, props.maxWidth ?? Infinity);
@@ -23,6 +28,7 @@ export function BoxConstraints(props: BoxConstraintsProps = {}): BoxConstraintsP
     maxWidth: toVal(maxWidth),
     minHeight: toVal(minHeight),
     maxHeight: toVal(maxHeight),
+    [BOX_CONSTRAINTS_SYMBOL]: true as const,
   };
 }
 
@@ -56,6 +62,13 @@ BoxConstraints.expand = ({
     minHeight: height ?? Infinity,
     maxHeight: height ?? Infinity,
   });
+
+/**
+ * 类型守卫：检查对象是否通过 BoxConstraints 创建
+ */
+export function isBoxConstraints(value: any): value is BoxConstraints {
+  return typeof value === "object" && value !== null && BOX_CONSTRAINTS_SYMBOL in value;
+}
 
 export function boxConstraintsToStyle(constraints?: BoxConstraintsProps): CSSProperties {
   const constraintsType = constraints ?? {};

@@ -1,10 +1,11 @@
-import { borderRadiusToStyle, BorderRadius } from "./BorderRadius";
+import { borderRadiusToStyle, BorderRadius, isBorderRadius } from "./BorderRadius";
 import type { BorderRadiusType } from "./BorderRadius";
 import { CSSProperties } from "vue";
 import { px2vw } from "./px2vw";
-import { borderToStyle, type Borders } from "./Border";
-import { BoxShadowProps, boxShadowToCSS } from "./BoxShadow";
+import { borderToStyle, type Borders, isBorders } from "./Border";
+import { BoxShadowProps, boxShadowToCSS, isBoxShadow } from "./BoxShadow";
 import { Alignment, alignmentToCssPosition } from "./Alignment";
+import { validateInDev } from "./utils";
 
 export * from "./Gradient";
 // export { BorderRadius };
@@ -141,6 +142,9 @@ export function DecorationImage(props: DecorationImageProps): DecorationImagePro
 /**
  * BoxDecoration接口定义
  */
+// 定义唯一符号标记
+const BOX_DECORATION_SYMBOL = Symbol("boxDecoration");
+
 export type BoxDecorationProps = {
   color?: string;
   border?: Borders;
@@ -153,7 +157,9 @@ export type BoxDecorationProps = {
   shape?: BoxShape;
 };
 
-export type BoxDecoration = BoxDecorationProps;
+export type BoxDecoration = BoxDecorationProps & {
+  [BOX_DECORATION_SYMBOL]?: true;
+};
 
 // Re-export BoxShadow for convenience
 // export type BoxShadow = BoxShadowProps;
@@ -209,6 +215,34 @@ export function boxDecorationToStyle(decoration?: BoxDecorationProps): CSSProper
   const { color, border, borderRadius, boxShadow, gradient, image, overflow, opacity, shape } =
     decoration;
 
+  // Validate BoxDecoration sub-properties, only in development mode
+  validateInDev(() => {
+    if (borderRadius && !isBorderRadius(borderRadius)) {
+      console.warn(
+        '[BoxDecoration] borderRadius must be created using BorderRadius constructor.\nExample: borderRadius="BorderRadius.circular(10)".',
+      );
+    }
+
+    if (border && !isBorders(border)) {
+      console.warn(
+        "[BoxDecoration] border must be created using Border.all or manual BorderSide assignment.\nExample: border=\"Border.all({ color: 'red', width: 1 })\".",
+      );
+    }
+
+    if (boxShadow) {
+      const shadows = Array.isArray(boxShadow) ? boxShadow : [boxShadow];
+      shadows.forEach((shadow, index) => {
+        if (!isBoxShadow(shadow)) {
+          console.warn(
+            "[BoxDecoration] boxShadow[" +
+              index +
+              "] must be created using BoxShadow constructor.\nExample: boxShadow=\"[BoxShadow({ color: 'rgba(0,0,0,0.2)', offset: { x: 2, y: 2 }, blurRadius: 4 })]\".",
+          );
+        }
+      });
+    }
+  });
+
   const style: CSSProperties = {};
 
   if (color) style.backgroundColor = color;
@@ -239,8 +273,18 @@ export function boxDecorationToStyle(decoration?: BoxDecorationProps): CSSProper
   return style;
 }
 
-export function BoxDecoration(props?: BoxDecorationProps): BoxDecorationProps {
-  return props as BoxDecorationProps;
+export function BoxDecoration(props?: BoxDecorationProps): BoxDecoration {
+  return {
+    ...(props as BoxDecorationProps),
+    [BOX_DECORATION_SYMBOL]: true as const,
+  };
+}
+
+/**
+ * 类型守卫：检查对象是否通过 BoxDecoration 构造函数创建
+ */
+export function isBoxDecoration(value: any): value is BoxDecoration {
+  return typeof value === "object" && value !== null && BOX_DECORATION_SYMBOL in value;
 }
 
 // 简单的辅助函数，实际使用可能更复杂

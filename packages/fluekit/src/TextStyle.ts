@@ -5,6 +5,7 @@
 
 import { CSSProperties } from "vue";
 import { px2vw } from "./px2vw";
+import { validateInDev } from "./utils";
 // import { build } from "vite";
 /**
  * 字体粗细枚举，对应 Flutter 的 FontWeight
@@ -134,7 +135,12 @@ export interface TextStyleProps {
   overflow?: TextOverflow;
 }
 
-export type TextStyle = TextStyleProps;
+// 定义唯一符号标记
+const TEXT_STYLE_SYMBOL = Symbol("textStyle");
+
+export type TextStyle = TextStyleProps & {
+  [TEXT_STYLE_SYMBOL]?: true;
+};
 
 const _kColorForegroundWarning =
   "Cannot provide both a color and a foreground\n" +
@@ -177,7 +183,7 @@ function buildFontFamily(
 }
 
 export function toCSSStyle(props: TextStyleProps = {}): CSSProperties {
-  validateTextStyle(props);
+  validateInDev(validateTextStyle, props);
 
   const cssStyle: CSSProperties = {};
 
@@ -304,19 +310,24 @@ export function toCSSStyle(props: TextStyleProps = {}): CSSProperties {
   return cssStyle;
 }
 
-export function TextStyle(
-  initial: TextStyleProps = {},
-  cloned: TextStyleProps = {},
-): TextStyleProps {
+export function TextStyle(initial: TextStyleProps = {}, cloned: TextStyleProps = {}): TextStyle {
   const merged = {
     ...cloned,
     ...initial,
+    [TEXT_STYLE_SYMBOL]: true as const,
   };
 
   // 模拟构造函数中的初始化逻辑
   // : fontFamily = package == null ? fontFamily : 'packages/$package/$fontFamily'
   // 注意：这里只是构建数据对象，真正的样式转换在 toCSSStyle 中
 
-  validateTextStyle(merged);
+  validateInDev(validateTextStyle, merged);
   return merged;
+}
+
+/**
+ * 类型守卫：检查对象是否通过 TextStyle 构造函数创建
+ */
+export function isTextStyle(value: any): value is TextStyle {
+  return typeof value === "object" && value !== null && TEXT_STYLE_SYMBOL in value;
 }
