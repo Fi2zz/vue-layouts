@@ -1,4 +1,5 @@
 import { px2vw } from "./px2vw";
+import { isPlainObject } from "./utils";
 
 export interface Offset {
   x: number;
@@ -42,7 +43,8 @@ export function BoxShadow(props: BoxShadowProps = {}): BoxShadow {
  * 类型守卫：检查对象是否通过 BoxShadow 构造函数创建
  */
 export function isBoxShadow(value: any): value is BoxShadow {
-  return typeof value === "object" && value !== null && BOX_SHADOW_SYMBOL in value;
+  if (!isPlainObject(value)) return false;
+  return BOX_SHADOW_SYMBOL in value;
 }
 
 export function boxShadowToCSS(shadow: BoxShadowProps): string {

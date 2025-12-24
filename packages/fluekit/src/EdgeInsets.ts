@@ -4,12 +4,12 @@ import { px2vw } from "./px2vw";
 const EDGE_INSETS_SYMBOL = Symbol("edgeInsets");
 
 export interface EdgeInsetsProps {
-  top?: number | string;
-  right?: number | string;
-  bottom?: number | string;
-  left?: number | string;
-  horizontal?: number | string;
-  vertical?: number | string;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+  horizontal?: number;
+  vertical?: number;
 }
 
 export type EdgeInsets = EdgeInsetsProps & {
@@ -28,7 +28,7 @@ export function EdgeInsets(edgeInsets: EdgeInsetsProps): EdgeInsets {
 }
 
 // Static methods for Flutter-like API
-EdgeInsets.all = (value: number | string) => {
+EdgeInsets.all = (value: number) => {
   return {
     top: value,
     right: value,
@@ -38,13 +38,8 @@ EdgeInsets.all = (value: number | string) => {
   };
 };
 
-EdgeInsets.symmetric = ({
-  vertical,
-  horizontal,
-}: {
-  vertical?: number | string;
-  horizontal?: number | string;
-}) => EdgeInsets({ vertical, horizontal });
+EdgeInsets.symmetric = ({ vertical, horizontal }: { vertical?: number; horizontal?: number }) =>
+  EdgeInsets({ vertical, horizontal });
 
 EdgeInsets.only = ({
   top,
@@ -52,10 +47,10 @@ EdgeInsets.only = ({
   bottom,
   left,
 }: {
-  top?: number | string;
-  right?: number | string;
-  bottom?: number | string;
-  left?: number | string;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
 }) => EdgeInsets({ top, right, bottom, left });
 
 EdgeInsets.zero = EdgeInsets({});

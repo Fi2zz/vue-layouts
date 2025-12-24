@@ -1,32 +1,33 @@
-<template>
-  <div class="animated-opacity" :style="style">
-    <slot />
-  </div>
-</template>
+<script lang="ts">
+import { computed, defineComponent, h } from "vue";
 
-<script setup lang="ts">
-import { computed, CSSProperties } from "vue";
-import { provideOpacity } from "./useOpacity";
-
-defineOptions({ inheritAttrs: false });
-
-interface Props {
-  opacity: number;
-  duration?: number; // ms
-  curve?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  duration: 300,
-  curve: "linear",
-});
-
-provideOpacity(computed(() => props.opacity));
-
-const style = computed(() => {
-  return {
-    opacity: props.opacity,
-    transition: `opacity ${props.duration}ms ${props.curve}`,
-  } as CSSProperties;
+import { StyleProvider } from "./StyleProvider";
+export default defineComponent({
+  name: "AnimatedOpacity",
+  inheritAttrs: false,
+  props: {
+    opacity: {
+      type: Number,
+      required: true,
+    },
+    duration: {
+      type: Number,
+      default: 300,
+    },
+    curve: {
+      type: String,
+      default: "linear",
+    },
+  },
+  setup(props, { slots }) {
+    const style = computed(() => {
+      if (typeof props.opacity == "undefined") return {};
+      const transition = `opacity ${props.duration}ms ${props.curve}`;
+      return { transition, opacity: props.opacity };
+    });
+    return () => {
+      return h(StyleProvider, { style: style.value }, slots);
+    };
+  },
 });
 </script>

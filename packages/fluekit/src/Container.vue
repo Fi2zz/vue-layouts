@@ -7,24 +7,24 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useSafeAttrs } from "./useSafeAttrs";
 import type { BoxConstraints } from "./BoxConstraints";
 import { boxConstraintsToStyle, isBoxConstraints } from "./BoxConstraints";
-import { validateInDev } from "./utils";
+import { useStyles } from "./StyleProvider";
+import { useSafeAttrs } from "./useSafeAttrs";
+import { isDefined, validateInDev } from "./utils";
 defineOptions({ inheritAttrs: false });
 // 引入 BoxDecoration 类型与背景图构造工具
 import { CSSProperties } from "vue";
+import { Alignment, alignmentToFlex, alignmentToOrigin } from "./Alignment";
 import type { BoxDecoration } from "./BoxDecoration";
 import { boxDecorationToStyle, isBoxDecoration } from "./BoxDecoration";
 import type { EdgeInsets } from "./EdgeInsets";
-import { marginToStyle, paddingToStyle, isEdgeInsets } from "./EdgeInsets";
-import { Alignment, alignmentToFlex, alignmentToOrigin } from "./Alignment";
+import { isEdgeInsets, marginToStyle, paddingToStyle } from "./EdgeInsets";
 import { sizeToStyle } from "./Size";
-import { useGestureEvents, useGestureStyle, useIgnoringStyle } from "./useGesture";
-
+import { useGestureEvents, useGestureStyle } from "./useGesture";
 interface Props {
-  width?: number | string;
-  height?: number | string;
+  width?: number;
+  height?: number;
   padding?: EdgeInsets;
   margin?: EdgeInsets;
   decoration?: BoxDecoration;
@@ -36,9 +36,17 @@ interface Props {
   transformAlignment?: Alignment;
   constraints?: BoxConstraints;
 }
+
+const _styles = useStyles();
+
 const safeAttrs = useSafeAttrs();
 const events = useGestureEvents();
 const mixedAttrs = computed(() => {
+  //@ts-ignore
+  if ((_styles.value as unknown as CSSProperties).pointerEvents == "none") {
+    return safeAttrs.value;
+  }
+
   return { ...safeAttrs.value, ...(events || {}) };
 });
 const gestureStyle = useGestureStyle();
@@ -55,8 +63,6 @@ const isNegative = (val?: string | number) => {
 // Props 校验与约束逻辑
 // 对应 Flutter Container 的 assert 逻辑
 const validateProps = () => {
-  // margin 允许负值，所以移除非负性检查
-
   // 2. assert(padding == null || padding.isNonNegative)
   if (props.padding) {
     const { left, top, right, bottom } = props.padding;
@@ -115,7 +121,6 @@ const validateProps = () => {
 
 validateInDev(validateProps);
 
-const ignoringStyle = useIgnoringStyle();
 /**
  * 计算最终样式
  * 中文说明：
@@ -144,6 +149,9 @@ const computedStyle = computed(() => {
     overflow: props.clipBehavior !== "none" ? "hidden" : undefined,
     position: "relative",
   };
+
+  Object.assign(style, _styles.value);
+
   if (props.alignment) {
     Object.assign(style, {
       display: "flex",
@@ -158,11 +166,12 @@ const computedStyle = computed(() => {
   // 处理 constraints = (width != null || height != null) ? constraints?.tighten(...) : constraints
   // 逻辑：如果设置了 width/height，则覆盖 constraints 中的对应限制
   const constraintsStyle: CSSProperties = boxConstraintsToStyle(props.constraints);
-  if (props.width !== undefined && props.width !== null) {
+
+  if (isDefined(props.width)) {
     delete constraintsStyle.minWidth;
     delete constraintsStyle.maxWidth;
   }
-  if (props.height !== undefined && props.height !== null) {
+  if (isDefined(props.height)) {
     delete constraintsStyle.minHeight;
     delete constraintsStyle.maxHeight;
   }
@@ -176,7 +185,7 @@ const computedStyle = computed(() => {
     // 简单的抗锯齿处理，实际可能需要 clip-path
     style.borderRadius = style.borderRadius || "inherit";
   }
-  Object.assign(style, ignoringStyle.value);
+
   return style;
 });
 

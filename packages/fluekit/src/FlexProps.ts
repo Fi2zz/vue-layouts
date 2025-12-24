@@ -45,7 +45,7 @@ export type FlexBoxProps = {
   // 是否换行
   wrap?: boolean;
   // 间距
-  gap?: number | string;
+  gap?: number;
   // 是否填充可用空间
   expanded?: boolean;
   as?: string;

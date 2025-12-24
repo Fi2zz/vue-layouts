@@ -8,10 +8,7 @@
     :style="listViewStyle"
   >
     <div class="list-view-content" :style="contentStyle">
-      <!-- 模式1: 静态子元素 (类似 Flutter ListView(children: [])) -->
       <slot v-if="!itemCount" />
-
-      <!-- 模式2: 构建器模式 (类似 Flutter ListView.builder) -->
       <template v-else>
         <template v-for="index in itemCount" :key="index - 1">
           <slot name="item" :index="index - 1"></slot>
@@ -37,7 +34,7 @@ interface Props {
   physics?: "bouncing" | "clamping" | "never" | "always";
   shrinkWrap?: boolean;
   itemCount?: number;
-  itemExtent?: number | string;
+  itemExtent?: number;
   separator?: boolean; // 是否启用分隔符
   clipBehavior?: "none" | "hardEdge" | "antiAlias";
 }

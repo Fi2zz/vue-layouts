@@ -2,6 +2,7 @@
 import { cloneVNode, defineComponent, h, Text, type PropType, type SetupContext } from "vue";
 import { useChild } from "./useChildren";
 import { events, useGestures, Behavior, provideGesture } from "./useGesture";
+import { isHtmlTag } from "./utils";
 
 export default defineComponent({
   name: "GestureDetector",
@@ -23,7 +24,7 @@ export default defineComponent({
       // <GestureDetector>Hello</GestureDetector>
       if (child.type === Text) return h("span", events, [child]);
       // <GestureDetector><div>World</div></GestureDetector>
-      if (typeof child.type === "string") return cloneVNode(child, events);
+      if (isHtmlTag(child)) return cloneVNode(child, events);
       return child;
     };
   },

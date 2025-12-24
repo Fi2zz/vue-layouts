@@ -36,7 +36,6 @@ export { Alignment as Alignment } from "./FlexProps";
 export * from "./Gradient";
 export * from "./Size";
 export * from "./TextStyle";
-export * from "./useOpacity";
 export { px2vw, setDefaultVW, setTransform } from "./px2vw";
 
 setTransform(false);

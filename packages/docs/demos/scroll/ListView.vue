@@ -1,5 +1,5 @@
 <template>
-  <SizedBox width="100%" height="200">
+  <SizedBox :width="300" :height="200">
     <ListView :padding="EdgeInsets.all(10)">
       <Container
         v-for="i in 10"

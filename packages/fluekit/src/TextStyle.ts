@@ -5,7 +5,7 @@
 
 import { CSSProperties } from "vue";
 import { px2vw } from "./px2vw";
-import { validateInDev } from "./utils";
+import { isPlainObject, validateInDev } from "./utils";
 // import { build } from "vite";
 /**
  * 字体粗细枚举，对应 Flutter 的 FontWeight
@@ -110,13 +110,13 @@ export interface TextStyleProps {
   inherit?: boolean;
   color?: string;
   backgroundColor?: string;
-  fontSize?: number | string;
-  fontWeight?: FontWeight | number | string;
+  fontSize?: number;
+  fontWeight?: FontWeight | number;
   fontStyle?: FontStyle;
-  letterSpacing?: number | string;
+  letterSpacing?: number;
   wordSpacing?: number;
   textBaseline?: TextBaseline;
-  height?: number | string; // 对应 CSS lineHeight
+  height?: number; // 对应 CSS lineHeight
   leadingDistribution?: any; // Web 暂无直接对应，保留占位
   locale?: any; // Web 暂无直接对应，保留占位
   foreground?: CSSProperties; // 对应 Paint，这里简化为 CSSProperties
@@ -318,7 +318,6 @@ export function TextStyle(initial: TextStyleProps = {}, cloned: TextStyleProps =
   };
 
   // 模拟构造函数中的初始化逻辑
-  // : fontFamily = package == null ? fontFamily : 'packages/$package/$fontFamily'
   // 注意：这里只是构建数据对象，真正的样式转换在 toCSSStyle 中
 
   validateInDev(validateTextStyle, merged);
@@ -329,5 +328,6 @@ export function TextStyle(initial: TextStyleProps = {}, cloned: TextStyleProps =
  * 类型守卫：检查对象是否通过 TextStyle 构造函数创建
  */
 export function isTextStyle(value: any): value is TextStyle {
-  return typeof value === "object" && value !== null && TEXT_STYLE_SYMBOL in value;
+  if (!isPlainObject(value)) return false;
+  return TEXT_STYLE_SYMBOL in value;
 }

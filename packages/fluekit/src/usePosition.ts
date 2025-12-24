@@ -3,19 +3,19 @@ import { px2vw } from "./px2vw";
 
 export interface Props {
   /** 距离顶部的距离 */
-  top?: number | string;
+  top?: number;
   /** 距离底部的距离 */
-  bottom?: number | string;
+  bottom?: number;
   /** 距离左侧的距离 */
-  left?: number | string;
+  left?: number;
   /** 距离右侧的距离 */
-  right?: number | string;
+  right?: number;
   /** 宽度 */
-  width?: number | string;
+  width?: number;
   /** 高度 */
-  height?: number | string;
+  height?: number;
   /** z-index 层级 */
-  zIndex?: number | string;
+  zIndex?: number;
 }
 
 export function positionToStyle(

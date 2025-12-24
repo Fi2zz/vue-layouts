@@ -16,9 +16,9 @@ interface Props {
   // 对齐方式 (覆盖父容器的 crossAxisAlignment)
   alignSelf?: "auto" | "start" | "end" | "center" | "stretch" | "baseline";
   // 最小宽度/高度
-  minSize?: number | string;
+  minSize?: number;
   // 最大宽度/高度
-  maxSize?: number | string;
+  maxSize?: number;
 }
 
 // 设置默认值

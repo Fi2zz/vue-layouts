@@ -1,5 +1,6 @@
 import { CSSProperties } from "vue";
 import { px2vw } from "./px2vw";
+import { isPlainObject } from "./utils";
 
 // 定义唯一符号标记
 const BOX_CONSTRAINTS_SYMBOL = Symbol("boxConstraints");
@@ -67,7 +68,8 @@ BoxConstraints.expand = ({
  * 类型守卫：检查对象是否通过 BoxConstraints 创建
  */
 export function isBoxConstraints(value: any): value is BoxConstraints {
-  return typeof value === "object" && value !== null && BOX_CONSTRAINTS_SYMBOL in value;
+  if (!isPlainObject(value)) return false;
+  return BOX_CONSTRAINTS_SYMBOL in value;
 }
 
 export function boxConstraintsToStyle(constraints?: BoxConstraintsProps): CSSProperties {

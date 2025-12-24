@@ -38,8 +38,8 @@ interface Props {
 
   // Grid 专有属性
   crossAxisCount?: number; // 列数 (垂直滚动时)
-  mainAxisSpacing?: number | string; // 主轴间距
-  crossAxisSpacing?: number | string; // 交叉轴间距
+  mainAxisSpacing?: number; // 主轴间距
+  crossAxisSpacing?: number; // 交叉轴间距
   childAspectRatio?: number; // 子元素宽高比
   itemCount?: number;
 }

@@ -1,4 +1,4 @@
-import { ref, inject, provide, CSSProperties, PropType, SetupContext, computed } from "vue";
+import { CSSProperties, PropType, SetupContext, inject, provide, ref } from "vue";
 
 const GESTURE_HANDLED = Symbol("gesture_handled");
 
@@ -196,9 +196,6 @@ export function useGestures({ emit }: SetupContext) {
 
 const S_EVENTS = Symbol("events");
 const S_BEHAVIOR = Symbol("behavior");
-const S_IGNORING = Symbol("ignoring");
-const S_IGNORING_SEMANTICS = Symbol("ignoringSemantics");
-
 export function useGestureStyle() {
   const behavior = inject<Behavior>(S_BEHAVIOR, "deferToChild");
   const style: CSSProperties = {};
@@ -219,29 +216,4 @@ export function useGestureEvents() {
 export function provideGesture(events: Events, behavior: Behavior) {
   provide(S_EVENTS, events);
   provide(S_BEHAVIOR, behavior);
-}
-
-export function provideIgnoring({ ignoring, ignoringSemantics }: any) {
-  provide(S_IGNORING, ignoring);
-  provide(S_IGNORING_SEMANTICS, ignoringSemantics);
-}
-
-export function useIgnoring() {
-  const ignoring = inject<boolean>(S_IGNORING, false);
-  const ignoringSemantics = inject<boolean>(S_IGNORING_SEMANTICS, false);
-  return { ignoring, ignoringSemantics };
-}
-
-export function noPointerEvents() {
-  const style: CSSProperties = {};
-  style.pointerEvents = "none";
-  return style;
-}
-
-export function useIgnoringStyle() {
-  const { ignoring } = useIgnoring();
-  return computed(() => {
-    if (ignoring) return noPointerEvents();
-    return {};
-  });
 }

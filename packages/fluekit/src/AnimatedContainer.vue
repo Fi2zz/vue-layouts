@@ -17,12 +17,12 @@ import { alignmentToOrigin, alignmentToStyle, type Alignment } from "./FlexProps
 import { sizeToStyle } from "./Size";
 import { useGestureEvents, useGestureStyle } from "./useGesture";
 import { useSafeAttrs } from "./useSafeAttrs";
-
+import { useStyles } from "./StyleProvider";
 defineOptions({ inheritAttrs: false });
 
 interface Props {
-  width?: number | string;
-  height?: number | string;
+  width?: number;
+  height?: number;
   padding?: EdgeInsets;
   margin?: EdgeInsets;
   decoration?: BoxDecoration;
@@ -37,9 +37,14 @@ interface Props {
   curve?: string;
 }
 
+const _styles = useStyles();
+
 const safeAttrs = useSafeAttrs();
 const events = useGestureEvents();
 const mixedAttrs = computed(() => {
+  if ((_styles.value as unknown as CSSProperties).pointerEvents == "none") {
+    return safeAttrs.value;
+  }
   return { ...safeAttrs.value, ...(events || {}) };
 });
 const gestureStyle = useGestureStyle();
@@ -93,7 +98,6 @@ const computedStyle = computed(() => {
 
   return {
     ...baseStyle,
-    // ...(attrs.style as any), // 移除直接透传
     display: "flex",
     flexDirection: "column",
     flexShrink: 0,

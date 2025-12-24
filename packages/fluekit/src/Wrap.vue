@@ -13,9 +13,9 @@ defineOptions({ inheritAttrs: false });
 interface Props {
   direction?: "horizontal" | "vertical";
   alignment?: "start" | "end" | "center" | "spaceBetween" | "spaceAround" | "spaceEvenly";
-  spacing?: number | string; // 主轴方向间距
+  spacing?: number; // 主轴方向间距
   runAlignment?: "start" | "end" | "center" | "spaceBetween" | "spaceAround" | "spaceEvenly";
-  runSpacing?: number | string; // 纵轴方向间距 (行间距)
+  runSpacing?: number; // 纵轴方向间距 (行间距)
   crossAxisAlignment?: "start" | "end" | "center";
   verticalDirection?: "down" | "up";
   clipBehavior?: "none" | "hardEdge" | "antiAlias";

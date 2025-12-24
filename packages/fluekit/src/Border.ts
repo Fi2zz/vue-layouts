@@ -1,5 +1,6 @@
 import { px2vw } from "./px2vw";
 import { CSSProperties } from "vue";
+import { isPlainObject } from "./utils";
 export type BorderStyleType = "none" | "solid" | "dashed" | "dotted" | "double";
 
 // 定义唯一符号标记
@@ -7,7 +8,7 @@ const BORDER_SIDE_SYMBOL = Symbol("borderSide");
 const BORDERS_SYMBOL = Symbol("borders");
 
 export type BorderSide = {
-  width?: number | string;
+  width?: number;
   color?: string;
   style?: BorderStyleType;
   [BORDER_SIDE_SYMBOL]?: true;
@@ -37,7 +38,7 @@ Border.all = ({
   style,
 }: {
   color?: string;
-  width?: number | string;
+  width?: number;
   style?: BorderStyleType;
 } = {}) => {
   const side = Border({ color, width, style });
@@ -54,14 +55,16 @@ Border.all = ({
  * 类型守卫：检查对象是否通过 Border 构造函数创建（单个边框边）
  */
 export function isBorderSide(value: any): value is BorderSide {
-  return typeof value === "object" && value !== null && BORDER_SIDE_SYMBOL in value;
+  if (!isPlainObject(value)) return false;
+  return BORDER_SIDE_SYMBOL in value;
 }
 
 /**
  * 类型守卫：检查对象是否通过 Border.all 创建（完整边框）
  */
 export function isBorders(value: any): value is Borders {
-  return typeof value === "object" && value !== null && BORDERS_SYMBOL in value;
+  if (!isPlainObject(value)) return false;
+  return BORDERS_SYMBOL in value;
 }
 
 function borderSideToString(side?: BorderSide) {

@@ -1,11 +1,11 @@
 <template>
-  <component :is="tag" :style="computedStyle" v-bind="events">
+  <component :is="tag" :style="computedStyle" v-bind="_events">
     <slot> {{ data }} </slot>
   </component>
 </template>
 
 <script setup lang="ts">
-import { computed, CSSProperties } from "vue";
+import { computed, CSSProperties, type ComputedRef } from "vue";
 import {
   TextAlign,
   TextDirection,
@@ -39,13 +39,26 @@ interface Props {
   tag?: string;
 }
 
+import { useStyles } from "./StyleProvider";
 import { useGestureStyle, useGestureEvents } from "./useGesture";
+
+const _styles = useStyles() as unknown as ComputedRef<CSSProperties>;
+
 const props = withDefaults(defineProps<Props>(), {
   tag: "span",
   softWrap: true,
 });
 // 注入手势上下文
 const events = useGestureEvents();
+
+const _events = computed(() => {
+  if ((_styles.value as unknown as CSSProperties).pointerEvents == "none") {
+    return {};
+  }
+
+  return events || {};
+});
+
 const data = computed(() => {
   const text = props.data;
   if (!isUndefined(text) && text != null) return text.toString();
