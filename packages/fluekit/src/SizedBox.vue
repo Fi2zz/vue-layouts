@@ -10,8 +10,8 @@ import { sizeToStyle } from "./Size";
 import { useSafeAttrs } from "./useSafeAttrs";
 defineOptions({ inheritAttrs: false });
 interface Props {
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
 }
 const props = defineProps<Props>();
 const safeAttrs = useSafeAttrs();

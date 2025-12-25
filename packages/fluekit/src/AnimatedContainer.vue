@@ -21,8 +21,8 @@ import { useStyles } from "./StyleProvider";
 defineOptions({ inheritAttrs: false });
 
 interface Props {
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   padding?: EdgeInsets;
   margin?: EdgeInsets;
   decoration?: BoxDecoration;

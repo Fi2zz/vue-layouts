@@ -3,17 +3,17 @@ import { px2vw } from "./px2vw";
 
 export interface Props {
   /** 距离顶部的距离 */
-  top?: number;
+  top?: number | string;
   /** 距离底部的距离 */
-  bottom?: number;
+  bottom?: number | string;
   /** 距离左侧的距离 */
-  left?: number;
+  left?: number | string;
   /** 距离右侧的距离 */
-  right?: number;
+  right?: number | string;
   /** 宽度 */
-  width?: number;
+  width?: number | string;
   /** 高度 */
-  height?: number;
+  height?: number | string;
   /** z-index 层级 */
   zIndex?: number;
 }

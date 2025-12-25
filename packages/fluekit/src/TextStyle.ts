@@ -116,7 +116,7 @@ export interface TextStyleProps {
   letterSpacing?: number;
   wordSpacing?: number;
   textBaseline?: TextBaseline;
-  height?: number; // 对应 CSS lineHeight
+  height?: number | string; // 对应 CSS lineHeight
   leadingDistribution?: any; // Web 暂无直接对应，保留占位
   locale?: any; // Web 暂无直接对应，保留占位
   foreground?: CSSProperties; // 对应 Paint，这里简化为 CSSProperties

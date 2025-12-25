@@ -8,7 +8,7 @@ const BORDER_SIDE_SYMBOL = Symbol("borderSide");
 const BORDERS_SYMBOL = Symbol("borders");
 
 export type BorderSide = {
-  width?: number;
+  width?: number | string;
   color?: string;
   style?: BorderStyleType;
   [BORDER_SIDE_SYMBOL]?: true;
@@ -38,7 +38,7 @@ Border.all = ({
   style,
 }: {
   color?: string;
-  width?: number;
+  width?: number | string;
   style?: BorderStyleType;
 } = {}) => {
   const side = Border({ color, width, style });

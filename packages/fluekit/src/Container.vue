@@ -23,8 +23,8 @@ import { isEdgeInsets, marginToStyle, paddingToStyle } from "./EdgeInsets";
 import { sizeToStyle } from "./Size";
 import { useGestureEvents, useGestureStyle } from "./useGesture";
 interface Props {
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   padding?: EdgeInsets;
   margin?: EdgeInsets;
   decoration?: BoxDecoration;

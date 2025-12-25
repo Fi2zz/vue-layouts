@@ -18,7 +18,7 @@ describe("IgnorePointer with GestureDetector", () => {
       template: `
         <GestureDetector @click="onClick" @tap="onTap">
           <IgnorePointer :ignoring="true">
-            <Container color="red" :width="100" :height="100" alignment="center">
+            <Container color="red" width="100" height="100" alignment="center">
               <Text data="Click Me" />
             </Container>
           </IgnorePointer>
@@ -54,7 +54,7 @@ describe("IgnorePointer with GestureDetector", () => {
       template: `
         <GestureDetector @click="onClick" @tap="onTap">
           <IgnorePointer :ignoring="false">
-            <Container color="red" :width="100" :height="100" alignment="center">
+            <Container color="red" width="100" height="100" alignment="center">
               <Text data="Click Me" />
             </Container>
           </IgnorePointer>
@@ -89,9 +89,9 @@ describe("IgnorePointer with GestureDetector", () => {
       },
       template: `
         <GestureDetector @click="onClick" @tap="onTap">
-          <Container color="blue" :width="120" :height="120" alignment="center">
+          <Container color="blue" width="120" height="120" alignment="center">
             <IgnorePointer :ignoring="true">
-              <Container color="red" :width="100" :height="100" alignment="center">
+              <Container color="red" width="100" height="100" alignment="center">
                 <IgnorePointer :ignoring="false">
                   <Text data="Click Me" />
                 </IgnorePointer>

@@ -1,8 +1,8 @@
 import { px2vw } from "./px2vw";
 
 export interface SizeType {
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
 }
 
 export type Size = SizeType;
