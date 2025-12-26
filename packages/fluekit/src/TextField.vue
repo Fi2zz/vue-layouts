@@ -99,6 +99,7 @@ interface Props {
   style?: TextStyle; // Text style
   cursorColor?: string;
   autofocus?: boolean;
+  autoGrow?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -107,6 +108,7 @@ const props = withDefaults(defineProps<Props>(), {
   readOnly: false,
   obscureText: false,
   maxLines: 1,
+  autoGrow: false,
 });
 
 const emit = defineEmits<{
@@ -124,6 +126,14 @@ let _ro: ResizeObserver | null = null;
 const _autoGrow = () => {
   const el = inputRef.value as HTMLTextAreaElement | null;
   if (!el || !isMultiline.value) return;
+
+  if (!props.autoGrow) {
+    el.style.height = "";
+    el.style.minHeight = "";
+    el.style.maxHeight = "";
+    return;
+  }
+
   const cs = window.getComputedStyle(el);
   const lh = parseFloat(cs.lineHeight || "0") || parseFloat(cs.fontSize || "16") * 1.2;
   const min = (props.minLines || 1) * lh;
@@ -190,6 +200,10 @@ watch(
 );
 watch(
   () => props.minLines,
+  () => nextTick(_autoGrow),
+);
+watch(
+  () => props.autoGrow,
   () => nextTick(_autoGrow),
 );
 // Styles

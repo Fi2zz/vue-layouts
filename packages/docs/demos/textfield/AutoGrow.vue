@@ -3,6 +3,7 @@
     <Text>Auto height TextArea</Text>
     <TextArea
       v-model="content"
+      auto-grow
       :max-lines="8"
       :decoration="{ labelText: 'Description', border: OutlineInputBorder() }"
     />

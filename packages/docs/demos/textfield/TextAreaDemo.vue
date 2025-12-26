@@ -3,6 +3,7 @@
     <Text>Using TextArea component:</Text>
     <TextArea
       v-model="bio"
+      auto-grow
       :decoration="{
         labelText: 'Biography',
         hintText: 'Tell us about yourself',
@@ -13,6 +14,7 @@
     <Text>Using TextField with maxLines:</Text>
     <TextField
       v-model="notes"
+      auto-grow
       :max-lines="3"
       :decoration="{
         labelText: 'Notes',
