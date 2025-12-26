@@ -22,7 +22,7 @@ export interface Borders {
   [BORDERS_SYMBOL]?: true;
 }
 
-export function Border(side: Omit<BorderSide, typeof BORDER_SIDE_SYMBOL>): BorderSide {
+export function BorderSide(side: Omit<BorderSide, typeof BORDER_SIDE_SYMBOL>): BorderSide {
   return {
     width: side.width ? side.width : 1,
     color: side.color || "#000",
@@ -31,7 +31,11 @@ export function Border(side: Omit<BorderSide, typeof BORDER_SIDE_SYMBOL>): Borde
   };
 }
 
+// Alias for compatibility if needed, but BorderSide is more accurate for a single side
+export const Border = BorderSide;
+
 // Static methods for Flutter-like API
+// @ts-ignore
 Border.all = ({
   color,
   width,
@@ -82,6 +86,12 @@ export interface Borders {
   top?: BorderSide;
   right?: BorderSide;
   bottom?: BorderSide;
+}
+
+export function borderSideToStyle(side?: BorderSide): CSSProperties {
+  if (!side) return {};
+  const borderStr = borderSideToString(side);
+  return borderStr ? { border: borderStr } : {};
 }
 
 export function borderToStyle(border: Borders): CSSProperties {

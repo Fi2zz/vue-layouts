@@ -310,6 +310,8 @@ export function toCSSStyle(props: TextStyleProps = {}): CSSProperties {
   return cssStyle;
 }
 
+export { toCSSStyle as textStyleToCSSStyle };
+
 export function TextStyle(initial: TextStyleProps = {}, cloned: TextStyleProps = {}): TextStyle {
   const merged = {
     ...cloned,
