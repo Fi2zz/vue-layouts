@@ -43,6 +43,6 @@ export * from "./InputDecoration";
 export * from "./Size";
 export * from "./TextStyle";
 export { px2vw, setDefaultVW, setTransform } from "./px2vw";
-export { setAssetBaseURL } from "./ImageProvider";
+export { setAssetBaseURL, createAssetImage } from "./ImageProvider";
 
 setTransform(false);

@@ -62,3 +62,18 @@ export function AssetImage(name: string, options: AssetImageOptions = {}): Image
     [IMAGE_PROVIDER_SYMBOL]: true,
   };
 }
+
+/**
+ * 创建一个预设 package 的 AssetImage 工厂函数
+ *
+ * @example
+ * const MyPkgAssets = createAssetImage({ package: 'my_pkg' });
+ * const img = MyPkgAssets('icons/logo.png'); // 相当于 AssetImage('icons/logo.png', { package: 'my_pkg' })
+ */
+export function createAssetImage(
+  baseOptions: AssetImageOptions,
+): (name: string, options?: AssetImageOptions) => ImageProvider {
+  return (name: string, options: AssetImageOptions = {}) => {
+    return AssetImage(name, { ...baseOptions, ...options });
+  };
+}
