@@ -6,6 +6,8 @@ import { BoxShadowProps, boxShadowToCSS, isBoxShadow } from "./BoxShadow";
 import { px2vw } from "./px2vw";
 import { isPlainObject, validateInDev } from "./utils";
 
+import { ImageProvider } from "./ImageProvider";
+
 export * from "./Gradient";
 // export { BorderRadius };
 type Valueof<T> = T[keyof T];
@@ -116,13 +118,8 @@ export function normalizeSrc(src: string) {
   return `${cleanBase}/${cleanSrc}`;
 }
 
-export type ImageProvider = string;
-
-export const NetworkImage = (url: string) => url;
-export const AssetImage = (url: string) => url;
-
 export interface DecorationImageProps {
-  image: ImageProvider;
+  image: ImageProvider | string;
   fit?: BoxFit;
   alignment?: BoxAlignment;
   repeat?: ImageRepeat;
@@ -169,7 +166,7 @@ const isGradient = (url: string) =>
 export function decorationImageToStyle(di: DecorationImageProps): CSSProperties {
   if (!di) return {};
   const css: CSSProperties = {};
-  const image = normalizeSrc(di.image);
+  const image = normalizeSrc(typeof di.image === "string" ? di.image : di.image.src);
   css.backgroundImage = isGradient(image) ? image : `url(${image})`;
 
   if (di.fit) {

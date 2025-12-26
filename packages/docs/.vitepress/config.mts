@@ -35,6 +35,7 @@ export default defineConfig({
           { text: "Expanded", link: "/components/expanded" },
           { text: "ListView & GridView", link: "/components/list-view" },
           { text: "Text", link: "/components/text" },
+          { text: "Image", link: "/components/Image" },
           { text: "Button", link: "/components/Button" },
           { text: "GestureDetector", link: "/components/gesture-detector" },
           { text: "Animations", link: "/components/animations" },
