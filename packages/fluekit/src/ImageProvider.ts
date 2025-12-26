@@ -44,7 +44,11 @@ export function setAssetBaseURL(url: string) {
  * 这里 AssetImage 接收的 name 应该是处理后的 URL 或者是相对于 public 的路径
  */
 export function AssetImage(name: string, options: AssetImageOptions = {}): ImageProvider {
-  let path = options.package ? `packages/${options.package}/${name}` : name;
+  /**
+   * 移除 Flutter 特有的 packages/ 前缀，直接拼接 package 名
+   * 这样更符合 Web 的扁平化或自定义目录结构
+   */
+  let path = options.package ? `${options.package}/${name}` : name;
 
   if (_assetBaseUrl) {
     const base = _assetBaseUrl.endsWith("/") ? _assetBaseUrl : _assetBaseUrl + "/";
