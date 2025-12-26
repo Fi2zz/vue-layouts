@@ -20,7 +20,11 @@
     <!-- Input Container -->
     <div class="fluekit-input-container" :style="containerStyle">
       <!-- Prefix -->
-      <div v-if="$slots.prefix || decoration?.prefixText" class="fluekit-input-prefix">
+      <div
+        v-if="$slots.prefix || decoration?.prefixText"
+        class="fluekit-input-prefix"
+        ref="prefixRef"
+      >
         <slot name="prefix">{{ decoration?.prefixText }}</slot>
       </div>
 
@@ -33,7 +37,7 @@
         :disabled="!enabled"
         :readonly="readOnly"
         :type="inputType"
-        :placeholder="decoration?.hintText"
+        :placeholder="placeholderText"
         :rows="minLines || 1"
         :style="inputStyle"
         v-bind="$attrs"
@@ -60,7 +64,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useSlots, type CSSProperties, type StyleValue } from "vue";
+import {
+  computed,
+  ref,
+  useSlots,
+  onMounted,
+  onBeforeUnmount,
+  type CSSProperties,
+  type StyleValue,
+} from "vue";
 import {
   type InputDecoration,
   type InputBorder,
@@ -104,6 +116,26 @@ const emit = defineEmits<{
 
 const inputRef = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
 const isFocused = ref(false);
+const prefixRef = ref<HTMLElement | null>(null);
+const prefixWidth = ref(0);
+let _ro: ResizeObserver | null = null;
+
+onMounted(() => {
+  if (prefixRef.value) {
+    _ro = new ResizeObserver(() => {
+      prefixWidth.value = Math.round(prefixRef.value!.getBoundingClientRect().width);
+    });
+    _ro.observe(prefixRef.value);
+    prefixWidth.value = Math.round(prefixRef.value.getBoundingClientRect().width);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (_ro) {
+    _ro.disconnect();
+    _ro = null;
+  }
+});
 
 const isMultiline = computed(() => {
   return props.maxLines === null || props.maxLines > 1 || props.keyboardType === "multiline";
@@ -120,6 +152,12 @@ const isFloating = computed(() => {
     isFocused.value ||
     (props.modelValue !== "" && props.modelValue !== null && props.modelValue !== undefined)
   );
+});
+
+// When label is present and not floating, hide hint to avoid overlap with label.
+const placeholderText = computed(() => {
+  if (props.decoration?.labelText && !isFloating.value) return "";
+  return props.decoration?.hintText || "";
 });
 
 // Styles
@@ -184,7 +222,7 @@ const inputStyle = computed<CSSProperties>(() => {
 const labelStyle = computed<CSSProperties>(() => {
   const css: CSSProperties = {
     position: "absolute",
-    left: currentBorder.value?.isOutline ? "12px" : "0",
+    left: `${(currentBorder.value?.isOutline ? 12 : 0) + (prefixWidth.value || 0)}px`,
     top: currentBorder.value?.isOutline ? "50%" : "0", // Center vertically initially
     transform: "translateY(-50%)",
     pointerEvents: "none",
