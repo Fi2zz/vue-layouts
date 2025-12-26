@@ -2,15 +2,66 @@
 
 Material Design text fields that allow users to enter text.
 
+<script setup>
+import BasicTextField from '@example/demos/textfield/BasicTextField.vue'
+import TextAreaDemo from '@example/demos/textfield/TextAreaDemo.vue'
+import Borders from '@example/demos/textfield/Borders.vue'
+import PrefixSuffix from '@example/demos/textfield/PrefixSuffix.vue'
+import Filled from '@example/demos/textfield/Filled.vue'
+import States from '@example/demos/textfield/States.vue'
+</script>
+
 ## Basic Usage
 
-<demo src="../demos/textfield/BasicTextField.vue" />
+<div class="demo-box">
+  <BasicTextField />
+</div>
+
+<<< ../demos/textfield/BasicTextField.vue
 
 ## TextArea (Multi-line)
 
 You can use the `TextArea` component for multi-line input, or `TextField` with `maxLines` > 1.
 
-<demo src="../demos/textfield/TextAreaDemo.vue" />
+<div class="demo-box">
+  <TextAreaDemo />
+</div>
+
+<<< ../demos/textfield/TextAreaDemo.vue
+
+## Borders
+
+<div class="demo-box">
+  <Borders />
+</div>
+
+<<< ../demos/textfield/Borders.vue
+
+## Prefix & Suffix
+
+<div class="demo-box">
+  <PrefixSuffix />
+</div>
+
+<<< ../demos/textfield/PrefixSuffix.vue
+
+## Filled
+
+<div class="demo-box">
+  <Filled />
+</div>
+
+<<< ../demos/textfield/Filled.vue
+
+## States
+
+Read-only、Disabled 与 Error 文本表现。
+
+<div class="demo-box">
+  <States />
+</div>
+
+<<< ../demos/textfield/States.vue
 
 ## API
 

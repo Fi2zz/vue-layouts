@@ -7,7 +7,6 @@
         labelText: 'Biography',
         hintText: 'Tell us about yourself',
         border: OutlineInputBorder(),
-        alignLabelWithHint: true,
       }"
     />
 
