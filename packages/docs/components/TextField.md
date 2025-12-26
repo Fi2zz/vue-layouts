@@ -89,16 +89,21 @@ Multi-line input can automatically adjust its height based on content by setting
 
 ### TextField
 
-| Prop        | Type              | Default | Description                                                                               |
-| ----------- | ----------------- | ------- | ----------------------------------------------------------------------------------------- |
-| modelValue  | `string`          | -       | The current text value.                                                                   |
-| decoration  | `InputDecoration` | -       | The decoration to show around the text field.                                             |
-| maxLines    | `number \| null`  | `1`     | The maximum number of lines to show at one time. If > 1 or null, it becomes a textarea.   |
-| autoGrow    | `boolean`         | `false` | Whether the input should automatically grow height based on content (only for multiline). |
-| obscureText | `boolean`         | `false` | Whether to hide the text being edited (e.g., for passwords).                              |
-| enabled     | `boolean`         | `true`  | Whether the text field is enabled.                                                        |
-| readOnly    | `boolean`         | `false` | Whether the text can be changed.                                                          |
-| style       | `TextStyle`       | -       | The style to use for the text being edited.                                               |
+| Prop               | Type              | Default | Description                                                                               |
+| ------------------ | ----------------- | ------- | ----------------------------------------------------------------------------------------- |
+| modelValue         | `string`          | -       | The current text value.                                                                   |
+| decoration         | `InputDecoration` | -       | The decoration to show around the text field.                                             |
+| maxLines           | `number \| null`  | `1`     | The maximum number of lines to show at one time. If > 1 or null, it becomes a textarea.   |
+| maxLength          | `number`          | -       | The maximum number of characters allowed. Shows a counter if set.                         |
+| textAlign          | `string`          | `start` | How the text should be aligned horizontally.                                              |
+| textInputAction    | `string`          | -       | The type of action button to use for the keyboard (e.g., 'enter', 'go', 'search').        |
+| textCapitalization | `string`          | `none`  | Configures how the platform should capitalize text (e.g., 'words', 'sentences').          |
+| autocorrect        | `boolean`         | `true`  | Whether to enable autocorrection.                                                         |
+| autoGrow           | `boolean`         | `false` | Whether the input should automatically grow height based on content (only for multiline). |
+| obscureText        | `boolean`         | `false` | Whether to hide the text being edited (e.g., for passwords).                              |
+| enabled            | `boolean`         | `true`  | Whether the text field is enabled.                                                        |
+| readOnly           | `boolean`         | `false` | Whether the text can be changed.                                                          |
+| style              | `TextStyle`       | -       | The style to use for the text being edited.                                               |
 
 ### TextArea
 

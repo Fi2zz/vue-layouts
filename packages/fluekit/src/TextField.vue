@@ -40,6 +40,10 @@
         :placeholder="placeholderText"
         :rows="minLines || 1"
         :style="inputStyle"
+        :maxlength="maxLength"
+        :autocapitalize="textCapitalization"
+        :enterkeyhint="textInputAction"
+        :autocorrect="autocorrect ? 'on' : 'off'"
         v-bind="$attrs"
         @input="handleInput"
         @focus="handleFocus"
@@ -54,11 +58,24 @@
 
     <!-- Helper/Error Text -->
     <div
-      v-if="decoration?.errorText || decoration?.helperText"
-      class="fluekit-input-helper"
-      :class="{ 'is-error': !!decoration?.errorText }"
+      v-if="decoration?.errorText || decoration?.helperText || (maxLength && maxLength > 0)"
+      class="fluekit-input-footer"
     >
-      {{ decoration?.errorText || decoration?.helperText }}
+      <div
+        v-if="decoration?.errorText || decoration?.helperText"
+        class="fluekit-input-helper"
+        :class="{ 'is-error': !!decoration?.errorText }"
+      >
+        {{ decoration?.errorText || decoration?.helperText }}
+      </div>
+
+      <!-- Spacer if helper exists but we want counter on the right -->
+      <div v-else class="fluekit-input-helper-spacer"></div>
+
+      <!-- Character Counter -->
+      <div v-if="maxLength && maxLength > 0" class="fluekit-input-counter">
+        {{ String(modelValue).length }} / {{ maxLength }}
+      </div>
     </div>
   </div>
 </template>
@@ -100,6 +117,11 @@ interface Props {
   cursorColor?: string;
   autofocus?: boolean;
   autoGrow?: boolean;
+  maxLength?: number;
+  textAlign?: "left" | "center" | "right" | "justify" | "start" | "end";
+  textInputAction?: "enter" | "done" | "go" | "next" | "previous" | "search" | "send";
+  textCapitalization?: "none" | "sentences" | "words" | "characters";
+  autocorrect?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -109,6 +131,8 @@ const props = withDefaults(defineProps<Props>(), {
   obscureText: false,
   maxLines: 1,
   autoGrow: false,
+  textAlign: "start",
+  autocorrect: true,
 });
 
 const emit = defineEmits<{
@@ -262,6 +286,9 @@ const inputStyle = computed<CSSProperties>(() => {
   if (props.cursorColor) {
     css.caretColor = props.cursorColor;
   }
+  if (props.textAlign) {
+    css.textAlign = props.textAlign;
+  }
   return css;
 });
 
@@ -339,10 +366,25 @@ const handleBlur = (e: FocusEvent) => {
   z-index: 1;
 }
 
+.fluekit-input-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
 .fluekit-input-helper {
   font-size: 12px;
-  margin-top: 4px;
   color: #666;
+}
+
+.fluekit-input-helper-spacer {
+  flex: 1;
+}
+
+.fluekit-input-counter {
+  font-size: 12px;
+  color: #666;
+  margin-left: auto; /* Push to right */
 }
 
 .fluekit-input-helper.is-error {
