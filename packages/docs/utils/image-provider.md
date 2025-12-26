@@ -17,6 +17,9 @@ import { Image, AssetImage, NetworkImage } from "fluekit";
 
   <!-- Network Image -->
   <Image :image="NetworkImage('https://example.com/pic.jpg')" />
+
+  <!-- Memory Image (Base64) -->
+  <Image :image="MemoryImage('data:image/png;base64,...')" />
 </template>
 ```
 
@@ -49,6 +52,14 @@ Creates an object that fetches the image at the given URL.
 
 ```typescript
 function NetworkImage(url: string): ImageProvider;
+```
+
+### MemoryImage
+
+Creates an object that displays an image from a `Base64` string or `Blob` object.
+
+```typescript
+function MemoryImage(data: string | Blob): ImageProvider;
 ```
 
 ## Configuration

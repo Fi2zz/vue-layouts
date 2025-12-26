@@ -16,6 +16,27 @@ export function NetworkImage(url: string): ImageProvider {
   };
 }
 
+/**
+ * Creates an ImageProvider from a Base64 string or Blob.
+ *
+ * @param data Base64 string (data:image/...) or Blob object
+ */
+export function MemoryImage(data: string | Blob): ImageProvider {
+  let src = "";
+  if (typeof data === "string") {
+    src = data;
+  } else if (data instanceof Blob) {
+    src = URL.createObjectURL(data);
+  } else {
+    console.warn("[MemoryImage] Unsupported data type. Expected string (base64) or Blob.");
+  }
+
+  return {
+    src,
+    [IMAGE_PROVIDER_SYMBOL]: true,
+  };
+}
+
 export interface AssetImageOptions {
   package?: string;
   bundle?: any;
@@ -42,6 +63,14 @@ export function AssetImage(name: string, options: AssetImageOptions = {}): Image
    * 这样更符合 Web 的扁平化或自定义目录结构
    */
   let path = options.package ? `${options.package}/${name}` : name;
+
+  // 如果是绝对路径或特殊协议（data:, blob:, http:, https:），直接返回，不拼接 base
+  if (/^(https?:|file:|blob:|data:|\/\/)/i.test(path)) {
+    return {
+      src: path,
+      [IMAGE_PROVIDER_SYMBOL]: true,
+    };
+  }
 
   if (_assetBaseUrl) {
     const base = _assetBaseUrl.endsWith("/") ? _assetBaseUrl : _assetBaseUrl + "/";
