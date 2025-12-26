@@ -70,6 +70,8 @@ import {
   useSlots,
   onMounted,
   onBeforeUnmount,
+  watch,
+  nextTick,
   type CSSProperties,
   type StyleValue,
 } from "vue";
@@ -119,6 +121,22 @@ const isFocused = ref(false);
 const prefixRef = ref<HTMLElement | null>(null);
 const prefixWidth = ref(0);
 let _ro: ResizeObserver | null = null;
+const _autoGrow = () => {
+  const el = inputRef.value as HTMLTextAreaElement | null;
+  if (!el || !isMultiline.value) return;
+  const cs = window.getComputedStyle(el);
+  const lh = parseFloat(cs.lineHeight || "0") || parseFloat(cs.fontSize || "16") * 1.2;
+  const min = (props.minLines || 1) * lh;
+  el.style.minHeight = `${Math.round(min)}px`;
+  if (props.maxLines && props.maxLines > 1) {
+    const max = props.maxLines * lh;
+    el.style.maxHeight = `${Math.round(max)}px`;
+  } else {
+    el.style.maxHeight = "";
+  }
+  el.style.height = "auto";
+  el.style.height = `${Math.max(Math.round(min), el.scrollHeight)}px`;
+};
 
 onMounted(() => {
   if (prefixRef.value) {
@@ -128,6 +146,7 @@ onMounted(() => {
     _ro.observe(prefixRef.value);
     prefixWidth.value = Math.round(prefixRef.value.getBoundingClientRect().width);
   }
+  nextTick(_autoGrow);
 });
 
 onBeforeUnmount(() => {
@@ -160,6 +179,19 @@ const placeholderText = computed(() => {
   return props.decoration?.hintText || "";
 });
 
+watch(
+  () => props.modelValue,
+  () => nextTick(_autoGrow),
+);
+watch(isMultiline, (v) => v && nextTick(_autoGrow));
+watch(
+  () => props.maxLines,
+  () => nextTick(_autoGrow),
+);
+watch(
+  () => props.minLines,
+  () => nextTick(_autoGrow),
+);
 // Styles
 const currentBorder = computed<InputBorder | undefined>(() => {
   if (props.decoration?.errorText && props.decoration.errorBorder)
@@ -247,6 +279,7 @@ const labelStyle = computed<CSSProperties>(() => {
 const handleInput = (e: Event) => {
   const target = e.target as HTMLInputElement;
   emit("update:modelValue", target.value);
+  nextTick(_autoGrow);
 };
 
 const handleFocus = (e: FocusEvent) => {

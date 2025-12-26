@@ -9,6 +9,7 @@ import Borders from '@example/demos/textfield/Borders.vue'
 import PrefixSuffix from '@example/demos/textfield/PrefixSuffix.vue'
 import Filled from '@example/demos/textfield/Filled.vue'
 import States from '@example/demos/textfield/States.vue'
+import AutoGrow from '@example/demos/textfield/AutoGrow.vue'
 </script>
 
 ## Basic Usage
@@ -62,6 +63,14 @@ Read-only、Disabled 与 Error 文本表现。
 </div>
 
 <<< ../demos/textfield/States.vue
+
+## Auto Height
+
+<div class="demo-box">
+  <AutoGrow />
+</div>
+
+<<< ../demos/textfield/AutoGrow.vue
 
 ## API
 
