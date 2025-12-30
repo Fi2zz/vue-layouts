@@ -1,10 +1,6 @@
 <template>
   <div class="slider-container" ref="trackRef">
-    <GestureDetector
-      :on-pan-start="handleDrag"
-      :on-pan-update="handleDrag"
-      :on-tap-down="handleDrag"
-    >
+    <GestureDetector @pan-start="handleDrag" @pan-update="handleDrag" @tap-down="handleDrag">
       <Container :height="40" alignment="centerLeft">
         <!-- Track -->
         <Stack alignment="centerLeft">
@@ -89,6 +85,8 @@ const handleDrag = (e: any) => {
     x = e.globalPosition.x;
   } else if (e.detail?.globalPosition) {
     x = e.detail.globalPosition.x;
+  } else if (e.touches && e.touches[0]) {
+    x = e.touches[0].clientX;
   }
 
   const clientX = x;
@@ -100,6 +98,7 @@ const handleDrag = (e: any) => {
   if (props.onChanged) {
     props.onChanged(newValue);
   }
+  emit("change", newValue);
   emit("update:value", newValue);
 };
 
