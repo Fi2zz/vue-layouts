@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2025-12-30
+
+### Features
+
+- **Box**: New convenience component for styling and positioning.
+- **Card**: New Material Design card component.
+- **Flex**: Export `CrossAxisAlignment` and `MainAxisAlignment` for easier usage.
+
 ## [1.4.1] - 2025-12-26
 
 ### Bug Fixes

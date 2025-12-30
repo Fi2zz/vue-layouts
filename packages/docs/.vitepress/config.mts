@@ -35,6 +35,8 @@ export default defineConfig({
         text: "Components",
         items: [
           { text: "Container", link: "/components/container" },
+          { text: "Box", link: "/components/box" },
+          { text: "Card", link: "/components/card" },
           { text: "Row & Column", link: "/components/row-column" },
           { text: "Stack, Positioned & Sticky", link: "/components/stack" },
           { text: "Expanded", link: "/components/expanded" },
