@@ -29,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   (e: "update:value", value: boolean): void;
+  (e: "change", value: boolean): void;
 }>();
 
 const toggle = () => {

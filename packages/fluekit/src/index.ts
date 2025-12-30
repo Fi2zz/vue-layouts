@@ -58,6 +58,7 @@ export { StackFit, CrossAxisAlignment, MainAxisAlignment } from "./FlexProps";
 export * from "./Gradient";
 export * from "./ImageProvider";
 export * from "./InputDecoration";
+export * from "./Matrix4";
 export * from "./Size";
 export * from "./TextStyle";
 export { px2vw, setDefaultVW, setTransform } from "./px2vw";

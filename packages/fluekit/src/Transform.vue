@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue";
 import { alignmentToOrigin, type Alignment } from "./FlexProps";
+import { Matrix4, matrix4ToCSSStyle } from "./Matrix4";
 
 defineOptions({ inheritAttrs: false });
 
@@ -16,7 +17,7 @@ interface Props {
    * 例如: "rotate(45deg)", "scale(1.5)", "translate(10px, 20px)"
    * 对应 Flutter 的 transform (Matrix4)
    */
-  transform?: string;
+  transform?: Matrix4;
 
   /**
    * 变换的原点对齐方式
@@ -37,10 +38,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const style = computed<CSSProperties>(() => {
   const css: CSSProperties = {
-    transform: props.transform,
+    ...matrix4ToCSSStyle(props.transform),
     // 为了不影响布局流，通常 Transform 应该是一个盒子
     // 但 CSS transform 不会改变元素占用的布局空间（layout），只会改变视觉位置（paint）
-    // 这与 Flutter 的 Transform 行为一致
     display: "flex", // 保持子元素布局上下文，或者 inline-block
     flexDirection: "column", // 默认行为
     flexShrink: 0,

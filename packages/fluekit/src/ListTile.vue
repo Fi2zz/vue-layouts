@@ -42,6 +42,23 @@ import GestureDetector from "./GestureDetector.vue";
 import { EdgeInsets } from "./EdgeInsets";
 import { TextStyle, FontWeight } from "./TextStyle";
 
+const emit = defineEmits<{
+  (e: "tap"): void;
+  (e: "long-press"): void;
+}>();
+
+const onTap = () => {
+  if (props.enabled) {
+    emit("tap");
+  }
+};
+
+const onLongPress = () => {
+  if (props.enabled) {
+    emit("long-press");
+  }
+};
+
 interface Props {
   // Content
   leading?: any;
