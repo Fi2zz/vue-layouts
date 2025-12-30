@@ -3,7 +3,7 @@
     :width="100"
     :height="100"
     color="orange"
-    transform="rotate(15deg)"
+    :transform="Matrix4.rotationZ(0.26)"
     transformAlignment="center"
     alignment="center"
     :margin="EdgeInsets.all(20)"
@@ -13,5 +13,5 @@
 </template>
 
 <script setup lang="ts">
-import { Container, Text, EdgeInsets } from "fluekit";
+import { Container, Text, EdgeInsets, Matrix4 } from "fluekit";
 </script>

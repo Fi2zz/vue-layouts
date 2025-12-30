@@ -95,7 +95,7 @@ Draw a decoration in front of the child.
 | `color`                | `string`                              | -        | The color to paint behind the child.                              |
 | `alignment`            | `Alignment \| string`                 | -        | Align the child within the container.                             |
 | `clipBehavior`         | `'none' \| 'hardEdge' \| 'antiAlias'` | `'none'` | The clip behavior when decoration is not null.                    |
-| `transform`            | `string`                              | -        | The transformation matrix to apply before painting the container. |
+| `transform`            | `Matrix4`                             | -        | The transformation matrix to apply before painting the container. |
 | `transformAlignment`   | `Alignment \| string`                 | -        | The alignment of the origin of the coordinate system.             |
 | `constraints`          | `BoxConstraints`                      | -        | Additional constraints to apply to the child.                     |
 
