@@ -13,7 +13,7 @@ import { LayoutBuilder, Text, TextStyle } from "fluekit";
 
 <template>
   <LayoutBuilder v-slot="{ constraints }">
-    <Text v-if="constraints.maxWidth > 500" :style="TextStyle({ fontSize: 20 })">
+    <Text v-if="(constraints.maxWidth ?? 0) > 500" :style="TextStyle({ fontSize: 20 })">
       Wide Layout
     </Text>
     <Text v-else :style="TextStyle({ fontSize: 14 })"> Narrow Layout </Text>

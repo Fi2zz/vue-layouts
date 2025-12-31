@@ -10,21 +10,23 @@
     <Container :height="300" color="#e0e0e0" :padding="EdgeInsets.all(10)">
       <LayoutBuilder v-slot="{ constraints }">
         <Container
-          :color="constraints.maxWidth > 500 ? 'teal' : 'orange'"
+          :color="(constraints.maxWidth ?? 0) > 500 ? 'teal' : 'orange'"
           alignment="center"
           width="100%"
           height="100%"
         >
           <Column main-axis-alignment="center" cross-axis-alignment="center">
             <Text :style="TextStyle({ color: 'white', fontWeight: FontWeight.bold, fontSize: 24 })">
-              Width: {{ Math.round(constraints.maxWidth) }}px
+              Width: {{ Math.round(constraints.maxWidth ?? 0) }}px
             </Text>
             <Text :style="TextStyle({ color: 'white' })">
-              Height: {{ Math.round(constraints.maxHeight) }}px
+              Height: {{ Math.round(constraints.maxHeight ?? 0) }}px
             </Text>
             <SizedBox :height="10" />
             <Text :style="TextStyle({ color: 'white' })">
-              {{ constraints.maxWidth > 500 ? "Wide Layout (Teal)" : "Narrow Layout (Orange)" }}
+              {{
+                (constraints.maxWidth ?? 0) > 500 ? "Wide Layout (Teal)" : "Narrow Layout (Orange)"
+              }}
             </Text>
           </Column>
         </Container>
