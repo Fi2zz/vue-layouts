@@ -3,7 +3,6 @@
     <Row>
       <GestureDetector v-for="(item, index) in items" :key="index" @tap="handleTap(item)">
         <Container
-          :flex="1"
           :padding="padding"
           :decoration="getItemDecoration(item, index)"
           alignment="center"
