@@ -48,9 +48,19 @@ A widget that establishes a subtree in which media queries resolve to the given 
 ### MediaQueryData Interface
 
 ```ts
+enum Orientation {
+  portrait = "portrait",
+  landscape = "landscape",
+}
+
 interface MediaQueryData {
   size: { width: number; height: number };
   devicePixelRatio: number;
   platformBrightness: "light" | "dark";
+  orientation: Orientation;
+  disableAnimations: boolean;
+  highContrast: boolean;
+  padding: EdgeInsets;
+  viewInsets: EdgeInsets;
 }
 ```
