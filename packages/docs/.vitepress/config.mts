@@ -60,6 +60,7 @@ export default defineConfig({
           { text: "AlertDialog", link: "/components/alert-dialog" },
           { text: "BottomSheet", link: "/components/bottom-sheet" },
           { text: "SegmentedControl", link: "/components/segmented-control" },
+          { text: "LayoutBuilder", link: "/components/layout-builder" },
         ],
       },
       {
