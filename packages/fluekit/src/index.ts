@@ -45,6 +45,7 @@ export { default as Slider } from "./Slider.vue";
 export { default as AlertDialog } from "./AlertDialog.vue";
 export { default as BottomSheet } from "./BottomSheet.vue";
 export { default as SegmentedControl } from "./SegmentedControl.vue";
+export { default as Builder } from "./Builder.vue";
 export { default as LayoutBuilder } from "./LayoutBuilder.vue";
 export { default as MediaQuery } from "./MediaQuery.vue";
 export { SnackBar } from "./SnackBar";

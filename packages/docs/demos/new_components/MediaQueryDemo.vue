@@ -25,7 +25,8 @@
         >
         <Text>Simulating Landscape Tablet with Top Padding:</Text>
         <div style="margin-top: 10px; padding: 10px; border: 1px dashed #999">
-          <ChildComponent />
+          <!-- Using Builder to access the new MediaQuery context inline without a new file -->
+          <Builder :builder="InlineChild" />
         </div>
       </Container>
     </MediaQuery>
@@ -43,8 +44,9 @@ import {
   Orientation,
   TextStyle,
   FontWeight,
+  Builder,
 } from "fluekit";
-import { reactive, defineComponent, h } from "vue";
+import { reactive, h } from "vue";
 
 const mediaQuery = useMediaQuery();
 
@@ -59,17 +61,17 @@ const customData = reactive({
   viewInsets: EdgeInsets.zero,
 });
 
-// Inline child component to test injection
-const ChildComponent = defineComponent({
-  setup() {
-    const mq = useMediaQuery();
-    return () =>
-      h("div", [
-        h("div", `Size: ${mq.size.width} x ${mq.size.height}`),
-        h("div", `Orientation: ${mq.orientation}`),
-        h("div", `Animations: ${mq.disableAnimations ? "Disabled" : "Enabled"}`),
-        h("div", `Padding Top: ${mq.padding.top}`),
-      ]);
-  },
-});
+// Inline builder function acting as a mini-component setup
+const InlineChild = () => {
+  // This hook sees the 'customData' provided by the wrapping <MediaQuery>
+  const mq = useMediaQuery();
+
+  return () =>
+    h("div", [
+      h("div", `Size: ${mq.size.width} x ${mq.size.height}`),
+      h("div", `Orientation: ${mq.orientation}`),
+      h("div", `Animations: ${mq.disableAnimations ? "Disabled" : "Enabled"}`),
+      h("div", `Padding Top: ${mq.padding.top}`),
+    ]);
+};
 </script>
