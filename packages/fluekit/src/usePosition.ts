@@ -18,25 +18,6 @@ export interface Props {
   zIndex?: number;
 }
 
-export function positionToStyle(
-  props: Props,
-  position: "absolute" | "fixed" | "sticky" | "relative" = "absolute",
-) {
-  const style: CSSProperties = {
-    position,
-    boxSizing: "border-box",
-  };
-
-  style.top = px2vw(props.top);
-  style.bottom = px2vw(props.bottom);
-  style.left = px2vw(props.left);
-  style.right = px2vw(props.right);
-  style.width = px2vw(props.width);
-  style.height = px2vw(props.height);
-  style.zIndex = props.zIndex;
-  return style;
-}
-
 export function usePositionStyle(
   props: Props,
   position: "absolute" | "fixed" | "sticky" | "relative" = "absolute",

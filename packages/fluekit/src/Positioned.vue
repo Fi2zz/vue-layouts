@@ -8,7 +8,7 @@
 import { onMounted, warn } from "vue";
 import { usePositionStyle, type Props } from "./usePosition";
 import { useStackContext } from "./useStack";
-const props = defineProps<Omit<Props, "zIndex">>();
+const props = defineProps<Props>();
 defineOptions({ inheritAttrs: false });
 const stackContext = useStackContext();
 onMounted(() => {
