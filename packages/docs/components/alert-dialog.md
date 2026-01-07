@@ -32,6 +32,9 @@ import AlertDialogDemo from '@example/demos/new_components/AlertDialogDemo.vue'
 | `actionsAlignment`   | `MainAxisAlignment` | `MainAxisAlignment.end` | Alignment of the action buttons.                               |
 | `titleAlignment`     | `Alignment`         | -                       | Alignment of the title.                                        |
 | `padding`            | `EdgeInsets`        | -                       | Padding inside the dialog content area.                        |
+| `titleStyle`         | `TextStyle`         | -                       | Custom text style for the title.                               |
+| `titleColor`         | `string`            | -                       | Color of the title text (overridden by `titleStyle`).          |
+| `titleFontSize`      | `number`            | `20`                    | Font size of the title text (overridden by `titleStyle`).      |
 
 ### Events
 

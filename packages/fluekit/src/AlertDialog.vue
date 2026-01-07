@@ -63,6 +63,9 @@ interface Props {
   actionsAlignment?: MainAxisAlignment;
   titleAlignment?: Alignment;
   padding?: EdgeInsets;
+  titleStyle?: TextStyle;
+  titleColor?: string;
+  titleFontSize?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -114,9 +117,15 @@ const dialogProps = computed(() => {
   );
 });
 
-const dialogTitleStyle = TextStyle({
-  fontSize: 20,
-  fontWeight: FontWeight.bold,
+const dialogTitleStyle = computed(() => {
+  return (
+    props.titleStyle ||
+    TextStyle({
+      fontSize: props.titleFontSize || 20,
+      fontWeight: FontWeight.bold,
+      color: props.titleColor || "rgba(0,0,0,0.87)",
+    })
+  );
 });
 
 const dialogContentStyle = TextStyle({
