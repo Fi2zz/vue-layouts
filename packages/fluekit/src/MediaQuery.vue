@@ -4,11 +4,7 @@
 
 <script setup lang="ts">
 import { provide } from "vue";
-import { MediaQueryData, MediaQueryKey } from "./MediaQuery";
-
-const props = defineProps<{
-  data: MediaQueryData;
-}>();
-
+import { MediaQueryData, MediaQueryKey } from "./useMediaQuery";
+const props = defineProps<{ data: MediaQueryData }>();
 provide(MediaQueryKey, props.data);
 </script>

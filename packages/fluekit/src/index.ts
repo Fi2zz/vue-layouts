@@ -57,7 +57,7 @@ export * from "./BorderRadius";
 export * from "./BoxShadow";
 export * from "./ButtonStyle";
 export * from "./EdgeInsets";
-export * from "./MediaQuery";
+export * from "./useMediaQuery";
 export { Alignment as Alignment } from "./FlexProps";
 export { StackFit, CrossAxisAlignment, MainAxisAlignment } from "./FlexProps";
 export * from "./Gradient";

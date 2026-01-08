@@ -60,7 +60,7 @@ const transitionStyle = computed(() => {
 });
 
 const computedStyle = computed(() => {
-  const baseStyle: any = {
+  const baseStyle: CSSProperties = {
     ...sizeToStyle(props),
     ...paddingToStyle(props.padding),
     ...marginToStyle(props.margin),
