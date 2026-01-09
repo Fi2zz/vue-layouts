@@ -1,5 +1,5 @@
 <template>
-  <div class="ink-well" :class="{ disabled: !onTap }" @click="handleClick" v-bind="$attrs">
+  <div class="ink-well" :class="{ disabled: disabled }" @click="handleClick" v-bind="$attrs">
     <slot />
     <span v-for="ripple in ripples" :key="ripple.id" class="ripple" :style="ripple.style" />
   </div>
@@ -15,10 +15,12 @@ interface Props {
   splashColor?: string;
   highlightColor?: string;
   borderRadius?: string; // CSS border-radius
+  disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   splashColor: "rgba(0, 0, 0, 0.1)",
+  disabled: false,
 });
 
 const emit = defineEmits<{
@@ -34,6 +36,7 @@ const ripples = ref<Ripple[]>([]);
 let rippleCount = 0;
 
 const handleClick = (e: MouseEvent) => {
+  if (props.disabled) return;
   emit("tap");
 
   const el = e.currentTarget as HTMLElement;

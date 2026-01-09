@@ -1,5 +1,5 @@
 <template>
-  <GestureDetector @tap="handleTap" @long-press="handleLongPress">
+  <GestureDetector :behavior="behavior" @tap="handleTap" @long-press="handleLongPress">
     <button class="fluekit-button" :style="computedStyle" :disabled="disabled" v-bind="mixedAttrs">
       <slot />
     </button>
@@ -11,7 +11,7 @@ import { computed, type CSSProperties } from "vue";
 import { ButtonStyle, buttonStyleToStyle } from "./ButtonStyle";
 import GestureDetector from "./GestureDetector.vue";
 import { useStyles } from "./StyleProvider";
-import { useGestureEvents, useGestureStyle } from "./useGesture";
+import { useGestureEvents, useGestureStyle, type Behavior } from "./useGesture";
 import { useSafeAttrs } from "./useSafeAttrs";
 
 defineOptions({ inheritAttrs: false });
@@ -19,12 +19,14 @@ defineOptions({ inheritAttrs: false });
 interface Props {
   // 交互属性
   disabled?: boolean;
+  behavior?: Behavior;
   // 样式属性
   style?: ButtonStyle;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
+  behavior: "opaque",
 });
 
 const emit = defineEmits<{
@@ -44,7 +46,7 @@ const mixedAttrs = computed(() => {
   return { ...safeAttrs.value, ...(events || {}) };
 });
 
-const gestureStyle = useGestureStyle();
+const gestureStyle = useGestureStyle(props.behavior);
 
 // 样式计算逻辑
 const computedStyle = computed(() => {
@@ -89,7 +91,8 @@ const handleLongPress = () => {
   line-height: inherit;
   color: inherit;
   text-align: inherit;
-  box-sizing: border-box; /* 确保 padding 包含在 width/height 内 */
+  box-sizing: border-box;
+  /* 确保 padding 包含在 width/height 内 */
 }
 
 .fluekit-button:disabled {

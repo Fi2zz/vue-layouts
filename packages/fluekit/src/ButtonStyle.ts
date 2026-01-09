@@ -5,8 +5,10 @@ import { BorderRadius, borderRadiusToStyle } from "./BorderRadius";
 import { EdgeInsets, paddingToStyle } from "./EdgeInsets";
 import { SizeType, sizeToStyle } from "./Size";
 import { px2vw } from "./px2vw";
+import { TextStyle, toCSSStyle as textStyleToCSS } from "./TextStyle";
 
 export interface ButtonStyle {
+  textStyle?: TextStyle;
   backgroundColor?: string;
   foregroundColor?: string; // 文本颜色
   overlayColor?: string; // 暂未实现水波纹，保留接口
@@ -27,6 +29,8 @@ export function buttonStyleToStyle(style?: ButtonStyle): CSSProperties {
   if (!style) return {};
 
   const css: CSSProperties = {};
+
+  if (style.textStyle) Object.assign(css, textStyleToCSS(style.textStyle));
 
   if (style.backgroundColor) css.backgroundColor = style.backgroundColor;
   if (style.foregroundColor) css.color = style.foregroundColor;

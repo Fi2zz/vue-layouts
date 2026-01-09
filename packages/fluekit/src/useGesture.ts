@@ -196,8 +196,8 @@ export function useGestures({ emit }: SetupContext) {
 
 const S_EVENTS = Symbol("events");
 const S_BEHAVIOR = Symbol("behavior");
-export function useGestureStyle() {
-  const behavior = inject<Behavior>(S_BEHAVIOR, "deferToChild");
+export function useGestureStyle(staticBehavior?: Behavior) {
+  const behavior = staticBehavior || inject<Behavior>(S_BEHAVIOR, "opaque");
   const style: CSSProperties = {};
   // 处理 behavior: opaque | translucent
   if (behavior === "opaque" || behavior === "translucent") {
