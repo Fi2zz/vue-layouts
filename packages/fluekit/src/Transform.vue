@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue";
-import { alignmentToOrigin, type Alignment } from "./FlexProps";
+import { type Alignment } from "./FlexProps";
 import { Matrix4, matrix4ToCSSStyle } from "./Matrix4";
 
 defineOptions({ inheritAttrs: false });
@@ -38,7 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const style = computed<CSSProperties>(() => {
   const css: CSSProperties = {
-    ...matrix4ToCSSStyle(props.transform),
+    ...matrix4ToCSSStyle(props.transform, props.alignment),
     // 为了不影响布局流，通常 Transform 应该是一个盒子
     // 但 CSS transform 不会改变元素占用的布局空间（layout），只会改变视觉位置（paint）
     display: "flex", // 保持子元素布局上下文，或者 inline-block
@@ -48,8 +48,6 @@ const style = computed<CSSProperties>(() => {
 
   if (props.origin) {
     css.transformOrigin = props.origin;
-  } else if (props.alignment) {
-    css.transformOrigin = alignmentToOrigin(props.alignment);
   }
 
   return css;

@@ -1,10 +1,15 @@
 <template>
   <GestureDetector @tap="toggle">
-    <Container :width="36" :height="20" :padding="EdgeInsets.all(2)" :decoration="trackDecoration">
+    <Container
+      :width="trackWidth"
+      :height="trackHeight"
+      :padding="EdgeInsets.all(2)"
+      :decoration="trackDecoration"
+    >
       <AnimatedContainer
         :duration="200"
-        :width="16"
-        :height="16"
+        :width="thumbSize"
+        :height="thumbSize"
         :margin="thumbMargin"
         :decoration="thumbDecoration"
       />
@@ -28,13 +33,15 @@ interface Props {
   activeTrackColor?: string;
   inactiveThumbColor?: string;
   inactiveTrackColor?: string;
+  variant?: "material" | "ios";
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  activeColor: "#2196F3",
-  activeTrackColor: "#BBDEFB",
-  inactiveThumbColor: "#FAFAFA",
-  inactiveTrackColor: "#9E9E9E",
+  activeColor: "#34C759", // iOS Green
+  activeTrackColor: "#34C759",
+  inactiveThumbColor: "#FFFFFF",
+  inactiveTrackColor: "#E9E9EA", // iOS Gray
+  variant: "ios",
 });
 
 const emit = defineEmits<{
@@ -49,22 +56,34 @@ const toggle = () => {
   emit("update:value", !props.value);
 };
 
+const isIOS = computed(() => props.variant === "ios");
+
+const trackWidth = computed(() => (isIOS.value ? 51 : 36));
+const trackHeight = computed(() => (isIOS.value ? 31 : 20)); // iOS height 31
+const thumbSize = computed(() => (isIOS.value ? 27 : 16));
+
 const trackDecoration = computed(() => {
+  const color = props.value
+    ? isIOS.value
+      ? props.activeColor
+      : props.activeTrackColor
+    : props.inactiveTrackColor;
+
   return BoxDecoration({
-    color: props.value ? props.activeTrackColor : props.inactiveTrackColor,
-    borderRadius: BorderRadius.circular(10),
+    color: color,
+    borderRadius: BorderRadius.circular(isIOS.value ? 100 : 10), // Pill shape for iOS
   });
 });
 
 const thumbDecoration = computed(() => {
   return BoxDecoration({
-    color: props.value ? props.activeColor : props.inactiveThumbColor,
+    color: isIOS.value ? "#FFFFFF" : props.value ? props.activeColor : props.inactiveThumbColor,
     shape: BoxShape.circle,
     boxShadow: [
       {
-        color: "rgba(0,0,0,0.2)",
-        blurRadius: 1,
-        offset: { x: 0, y: 1 },
+        color: "rgba(0,0,0,0.3)",
+        blurRadius: isIOS.value ? 3 : 1,
+        offset: { x: 0, y: isIOS.value ? 2 : 1 },
       },
     ],
   });
@@ -72,6 +91,10 @@ const thumbDecoration = computed(() => {
 
 const thumbMargin = computed(() => {
   // Simple approximation of sliding
-  return EdgeInsets.only({ left: props.value ? 16 : 0 });
+  // iOS padding: 2px
+  const padding = 2;
+  const slideDistance = trackWidth.value - thumbSize.value - padding * 2;
+
+  return EdgeInsets.only({ left: props.value ? slideDistance : 0 });
 });
 </script>

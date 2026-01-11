@@ -1,4 +1,5 @@
 import { type CSSProperties } from "vue";
+import { type Alignment, alignmentToOrigin } from "./Alignment";
 
 const MATRIX4_SYMBOL = Symbol("Matrix4");
 
@@ -142,9 +143,15 @@ Matrix4.skewY = (beta: number): Matrix4 => {
   return Matrix4([1, t, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
 };
 
-export function matrix4ToCSSStyle(transform?: Matrix4): CSSProperties {
+export function matrix4ToCSSStyle(transform?: Matrix4, alignment?: Alignment): CSSProperties {
   if (!transform) return {};
-  return {
+  const style: CSSProperties = {
     transform: transform.toString(),
   };
+
+  if (alignment) {
+    style.transformOrigin = alignmentToOrigin(alignment);
+  }
+
+  return style;
 }

@@ -20,6 +20,7 @@ interface Props {
   margin?: EdgeInsets;
   clipBehavior?: "none" | "hardEdge" | "antiAlias" | string;
   borderOnForeground?: boolean; // Not fully implemented in Container yet, but keeping for API compatibility idea
+  variant?: "material" | "ios";
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   elevation: 1,
   clipBehavior: "none",
   margin: () => EdgeInsets.all(4), // Default margin for Card
+  variant: "ios",
 });
 
 const computedDecoration = computed(() => {
@@ -35,10 +37,18 @@ const computedDecoration = computed(() => {
   // This is a simplified approximation of Material Design elevation
   const shadows: BoxShadow[] = [];
 
-  if (props.elevation > 0) {
-    const opacity = 0.2; // Simplified opacity
+  if (props.variant === "ios") {
+    // iOS style shadow: subtle, larger blur
+    shadows.push(
+      BoxShadow({
+        color: "rgba(0, 0, 0, 0.05)",
+        offset: { x: 0, y: 2 },
+        blurRadius: 10,
+        spreadRadius: 0,
+      }),
+    );
+  } else if (props.elevation > 0) {
     const blur = props.elevation * 2;
-    const offset = props.elevation;
 
     shadows.push(
       BoxShadow({
@@ -55,9 +65,11 @@ const computedDecoration = computed(() => {
     // But keeping it simple for this 'fluekit'
   }
 
+  const defaultShape = props.variant === "ios" ? BorderRadius.all(12) : BorderRadius.all(4);
+
   return BoxDecoration({
     color: props.color,
-    borderRadius: props.shape || BorderRadius.all(4),
+    borderRadius: props.shape || defaultShape,
     boxShadow: shadows.length > 0 ? shadows : undefined,
   });
 });

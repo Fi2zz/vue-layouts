@@ -84,20 +84,13 @@
 import {
   computed,
   ref,
-  useSlots,
   onMounted,
   onBeforeUnmount,
   watch,
   nextTick,
   type CSSProperties,
-  type StyleValue,
 } from "vue";
-import {
-  type InputDecoration,
-  type InputBorder,
-  OutlineInputBorder,
-  UnderlineInputBorder,
-} from "./InputDecoration";
+import { type InputDecoration, type InputBorder, UnderlineInputBorder } from "./InputDecoration";
 import { type TextStyle, toCSSStyle as textStyleToCSS } from "./TextStyle";
 import { BorderSide, borderSideToStyle } from "./Border";
 import { BorderRadius, borderRadiusToStyle } from "./BorderRadius";

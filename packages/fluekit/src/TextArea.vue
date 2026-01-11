@@ -17,7 +17,7 @@ interface Props {
   maxLines?: number;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   maxLines: 4,
 });
 

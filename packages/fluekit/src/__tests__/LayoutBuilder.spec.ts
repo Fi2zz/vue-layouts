@@ -8,7 +8,7 @@ class MockResizeObserver {
   constructor(callback: ResizeObserverCallback) {
     observerCallback = callback;
   }
-  observe(target: Element) {
+  observe() {
     // Optionally trigger immediately if needed, but we can do it manually in tests
   }
   unobserve() {}

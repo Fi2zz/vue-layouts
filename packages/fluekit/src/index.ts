@@ -42,12 +42,14 @@ export { default as Switch } from "./Switch.vue";
 export { default as Checkbox } from "./Checkbox.vue";
 export { default as Radio } from "./Radio.vue";
 export { default as Slider } from "./Slider.vue";
+export { default as RangeSlider } from "./RangeSlider.vue";
 export { default as AlertDialog } from "./AlertDialog.vue";
 export { default as BottomSheet } from "./BottomSheet.vue";
 export { default as SegmentedControl } from "./SegmentedControl.vue";
 export { default as Builder } from "./Builder.vue";
 export { default as LayoutBuilder } from "./LayoutBuilder.vue";
 export { default as MediaQuery } from "./MediaQuery.vue";
+export { default as CupertinoActivityIndicator } from "./CupertinoActivityIndicator.vue";
 export { SnackBar } from "./SnackBar";
 
 export * from "./Border";

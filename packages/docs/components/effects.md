@@ -8,7 +8,7 @@ A widget that makes its child partially transparent.
 import Opacity from '@example/demos/effect/Opacity.vue'
 import IgnorePointer from '@example/demos/effect/IgnorePointer.vue'
 import SafeArea from '@example/demos/effect/SafeArea.vue'
-import TransformWidget from '@example/demos/effect/TransformWidget.vue'
+import TransformDemo from '@example/demos/effect/TransformDemo.vue'
 </script>
 
 <div class="demo-box">
@@ -22,10 +22,10 @@ import TransformWidget from '@example/demos/effect/TransformWidget.vue'
 A widget that applies a transformation before painting its child.
 
 <div class="demo-box">
-  <TransformWidget />
+  <TransformDemo />
 </div>
 
-<<< ../demos/effect/TransformWidget.vue
+<<< ../demos/effect/TransformDemo.vue
 
 ## IgnorePointer
 

@@ -1,5 +1,4 @@
 import { reactive, inject, InjectionKey } from "vue";
-import { Size } from "./Size";
 import { EdgeInsets } from "./EdgeInsets";
 
 export enum Orientation {

@@ -35,7 +35,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import Container from "./Container.vue";
-import Column from "./Column.vue";
 import Row from "./Row.vue";
 import Text from "./Text.vue";
 import Fixed from "./Fixed.vue";
@@ -86,7 +85,7 @@ const close = () => {
   emit("close");
 };
 const ok = () => emit("ok");
-const onBarrierDismiss = (e: MouseEvent) => {
+const onBarrierDismiss = () => {
   if (props.barrierDismissible) {
     close();
   }
@@ -131,28 +130,5 @@ const dialogTitleStyle = computed(() => {
 const dialogContentStyle = TextStyle({
   fontSize: 16,
   color: "rgba(0,0,0,0.6)",
-});
-const dialogDecoration = computed(() => {
-  return BoxDecoration({
-    color: "white",
-    borderRadius: BorderRadius.circular(4),
-    boxShadow: [
-      {
-        color: "rgba(0,0,0,0.2)",
-        blurRadius: 24,
-        offset: { x: 0, y: 11 },
-      },
-    ],
-  });
-});
-const coreProps = computed(() => {
-  return Object.assign(
-    {},
-    {
-      constraints: props.constraints || BoxConstraints({ maxWidth: 400 }),
-      decoration: dialogDecoration.value,
-    },
-    props.size ? Size(props.size) : {},
-  );
 });
 </script>

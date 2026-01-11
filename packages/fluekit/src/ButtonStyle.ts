@@ -21,6 +21,7 @@ export interface ButtonStyle {
   side?: BorderSide;
   shape?: BorderRadius; // 简化 shape 为圆角
   alignment?: Alignment;
+  opacity?: number;
 }
 
 export const ButtonStyle = (style: ButtonStyle): ButtonStyle => style;
@@ -29,6 +30,8 @@ export function buttonStyleToStyle(style?: ButtonStyle): CSSProperties {
   if (!style) return {};
 
   const css: CSSProperties = {};
+
+  if (style.opacity !== undefined) css.opacity = style.opacity;
 
   if (style.textStyle) Object.assign(css, textStyleToCSS(style.textStyle));
 

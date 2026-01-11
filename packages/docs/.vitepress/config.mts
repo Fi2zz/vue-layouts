@@ -47,6 +47,7 @@ export default defineConfig({
           { text: "Button", link: "/components/Button" },
           { text: "GestureDetector", link: "/components/gesture-detector" },
           { text: "Animations", link: "/components/animations" },
+          { text: "ActivityIndicator", link: "/components/activity-indicator" },
           { text: "Effects", link: "/components/effects" },
           { text: "Divider & Spacer", link: "/components/divider" },
           { text: "Clip", link: "/components/clip" },
