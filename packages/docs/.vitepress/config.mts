@@ -51,6 +51,7 @@ export default defineConfig({
           { text: "ConstrainedBox", link: "/components/constrained-box" },
           { text: "Container", link: "/components/container" },
           { text: "CupertinoContextMenu", link: "/components/cupertino-context-menu" },
+          { text: "CupertinoTextField", link: "/components/cupertino-text-field" },
           { text: "Divider & Spacer", link: "/components/divider" },
           { text: "Drawer", link: "/components/drawer" },
           { text: "DropdownButton", link: "/components/dropdown-button" },
@@ -128,6 +129,15 @@ export default defineConfig({
     resolve: {
       alias: [
         { find: "fluekit", replacement: path.resolve(__dirname, "../../fluekit/src/index.ts") },
+        {
+          find: "@fluekit/presets",
+          replacement: path.resolve(__dirname, "../../fluekit-presets/src/index.ts"),
+        },
+        {
+          find: "@fluekit/liquid",
+          replacement: path.resolve(__dirname, "../../fluekit-liquid/src/index.ts"),
+        },
+
         { find: "@example", replacement: path.resolve(__dirname, "../") },
       ],
     },

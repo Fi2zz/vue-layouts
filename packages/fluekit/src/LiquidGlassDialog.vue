@@ -6,6 +6,15 @@
           <div :style="liquidGlassDialogStyle" @click.stop v-if="modelValue">
             <div style="position: relative; z-index: 2">
               <Container :padding="contentPadding">
+                <div v-if="icon" :style="iconContainerStyle">
+                  <Image v-if="isImageProvider(icon)" :image="icon" :width="48" :height="48" />
+                  <Icon
+                    v-else
+                    :icon="resolvedIcon"
+                    :size="48"
+                    :color="mediaQuery.platformBrightness === 'dark' ? '#ffffff' : '#000000'"
+                  />
+                </div>
                 <Text :style="titleStyle" tag="h3" v-if="title">{{ title }}</Text>
                 <Text :style="messageStyle" tag="p" v-if="message" :data="message"></Text>
               </Container>
@@ -30,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef, CSSProperties } from "vue";
+import { computed, ComputedRef, CSSProperties, type Component } from "vue";
 import { Alignment } from "./Alignment";
 import { defineKeyframes } from "./Animator";
 import { BorderRadius } from "./BorderRadius";
@@ -44,18 +53,25 @@ import FlexBox from "./FlexBox.vue";
 import { ImageFilter } from "./ImageFilter";
 import { StyleProvider } from "./StyleProvider";
 import Text from "./Text.vue";
+import Icon from "./Icon.vue";
+import { Icons } from "./Icons";
+import { CupertinoIcons } from "./CupertinoIcons";
 import { FontWeight, TextAlign, TextStyle } from "./TextStyle";
 import { useMediaQuery } from "./useMediaQuery";
 import { useZIndex } from "./usePosition";
 import { isIOS, isIPad, isMacOS } from "./device";
 import { px2vw } from "./px2vw";
-export type LiquidGlassDialogActionStyle = "default" | "primary";
+import Image from "./Image.vue";
+import { CupertinoColors } from "./CupertinoColors";
+import { isImageProvider, type ImageProvider } from "./ImageProvider";
+export type LiquidGlassDialogActionStyle = "default" | "primary" | "destructive";
 defineOptions({ inheritAttrs: false });
 export interface LiquidGlassDialogAction {
   title: string;
   style?: LiquidGlassDialogActionStyle;
   keepOpen?: boolean;
-  onPressed?: (action: LiquidGlassDialogAction) => Promise<void>;
+  // support  async function
+  onPressed?: (action: LiquidGlassDialogAction) => void | Promise<void>;
   [key: string]: unknown;
 }
 
@@ -73,6 +89,7 @@ export interface LiquidGlassDialogProps {
   message?: string;
   actions: LiquidGlassDialogAction[];
   alignment?: Alignment;
+  icon?: ImageProvider | Component | string;
 }
 const props = withDefaults(defineProps<LiquidGlassDialogProps>(), {
   title: "",
@@ -120,6 +137,28 @@ const handleAction = async (action: LiquidGlassDialogAction, index: number) => {
 
   if (!action.keepOpen) close();
 };
+
+const resolvedIcon = computed(() => {
+  if (!props.icon) return null;
+  if (typeof props.icon === "string") {
+    // Check built-in icons
+    if (props.icon in Icons) {
+      return (Icons as any)[props.icon];
+    }
+    if (props.icon in CupertinoIcons) {
+      return (CupertinoIcons as any)[props.icon];
+    }
+  }
+  return props.icon;
+});
+
+const iconContainerStyle = computed<CSSProperties>(() => {
+  return {
+    display: "flex",
+    // justifyContent: 'sta',
+    marginBottom: px2vw(16),
+  };
+});
 
 const contentPadding = EdgeInsets.only({
   top: "22PX",
@@ -172,12 +211,20 @@ function getActionButtonStyle(action: LiquidGlassDialogAction): ButtonStyle {
   let textColor;
   switch (mediaQuery.platformBrightness) {
     case "light":
-      textColor = action.style == "primary" ? "#ffffff" : "#000000";
-      backgroundColor = action.style == "primary" ? "#007aff" : "rgba(120, 120, 128, 0.16)";
+      textColor =
+        action.style == "primary"
+          ? CupertinoColors.white
+          : action.style == "destructive"
+            ? CupertinoColors.destructiveRed
+            : CupertinoColors.black;
+      backgroundColor =
+        action.style == "primary" ? CupertinoColors.activeBlue : "rgba(120, 120, 128, 0.16)";
       break;
     case "dark":
-      textColor = "#ffffff";
-      backgroundColor = action.style == "primary" ? "#0a84ff" : "rgba(120, 120, 128, 0.24)";
+      textColor =
+        action.style == "destructive" ? CupertinoColors.destructiveRed : CupertinoColors.white;
+      backgroundColor =
+        action.style == "primary" ? CupertinoColors.activeBlue : "rgba(120, 120, 128, 0.24)";
       break;
   }
   const w = mediaQuery.size.width;

@@ -67,6 +67,7 @@
 <script setup lang="ts">
 import {
   FontWeight,
+  ImageProvider,
   LiquidGlassDialog,
   LiquidGlassDialogAction,
   LiquidGlassDialogActionPayload,
@@ -111,6 +112,7 @@ const showImperativeLiquidGlassDialog = () => {
   showLiquidGlassDialog({
     title: "Imperative LiquidGlassDialog",
     message: "This dialog was created using showLiquidGlassDialog().",
+    icon: ImageProvider("https://example.com/avatar.png"),
     actions: [
       {
         title: "Cancel",

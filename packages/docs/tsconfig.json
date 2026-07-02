@@ -11,6 +11,8 @@
     "baseUrl": ".",
     "paths": {
       "fluekit": ["../fluekit/src/index.ts"],
+      "@fluekit/presets": ["../fluekit-presets/src/index.ts"],
+      "@fluekit/liquid": ["../fluekit-liquid/src/index.ts"],
       "@example/*": ["./*"]
     },
     "allowImportingTsExtensions": true,

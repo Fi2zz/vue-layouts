@@ -32,7 +32,7 @@ provideFlueConfig(props);
 const providerStyle = computed<CSSProperties>(() => {
   const lineHeight = props.lineHeight ?? "normal";
   const style: CSSProperties & Record<string, any> = {
-    "--flue-line-height": lineHeight,
+    "--fluekit-line-height": lineHeight,
     lineHeight,
     display: "contents",
   };

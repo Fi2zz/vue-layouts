@@ -1,7 +1,8 @@
 import { px2vw } from "./px2vw";
 import { CSSProperties } from "vue";
 import { isPlainObject } from "./utils";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 export type BorderStyleType = "none" | "solid" | "dashed" | "dotted" | "double";
 
 // 定义唯一符号标记

@@ -5,16 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, CSSProperties } from "vue";
+import { computed } from "vue";
 import { boxConstraintsToStyle } from "./BoxConstraints";
-import {
-  FlexBoxAlignMap,
-  FlexBoxJustifyMap,
-  FlexBoxProps,
-  flexBoxToStyle,
-  MainAxisSize,
-} from "./FlexProps";
-import { px2vw } from "./px2vw";
+import { FlexBoxProps, flexBoxToStyle, MainAxisSize } from "./FlexProps";
 import { useStyles } from "./StyleProvider";
 defineOptions({ name: "FlexBox", inheritAttrs: false });
 const props = withDefaults(defineProps<FlexBoxProps>(), {

@@ -10,6 +10,7 @@
         })
       "
     />
+    <Text>Username: {{ value }}</Text>
 
     <TextField
       v-model="password"
@@ -24,6 +25,7 @@
         })
       "
     />
+    <Text>Password: {{ password }}</Text>
     <TextField
       v-model="password"
       obscure-text
@@ -37,7 +39,28 @@
       "
     />
 
-    <Text>Username: {{ value }}</Text>
+    <TextField
+      v-model.number="number"
+      :decoration="
+        InputDecoration({
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          hintText: 'Enter a number',
+          labelText: 'v-model.number Modifier',
+        })
+      "
+    />
+    <Text>Number: {{ number }}</Text
+    ><TextField
+      v-model.trim="trim"
+      :decoration="
+        InputDecoration({
+          labelText: 'v-model.trim ',
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          border: UnderlineInputBorder(),
+        })
+      "
+    />
+    <Text>Trimmed: {{ trim }}</Text>
   </Column>
 </template>
 
@@ -55,4 +78,7 @@ import {
 
 const value = ref("");
 const password = ref("");
+const number = ref(0);
+const trim = ref("");
+const lazy = ref("");
 </script>

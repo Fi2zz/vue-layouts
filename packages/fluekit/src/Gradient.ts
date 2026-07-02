@@ -1,5 +1,6 @@
 import { Alignment, alignmentToCssPosition } from "./Alignment";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 
 export enum TileMode {
   clamp = "clamp",

@@ -5,7 +5,8 @@ A utility class that provides common text style presets for both iOS (Cupertino)
 ## Usage
 
 ```typescript
-import { TextStylePreset, Text } from 'fluekit';
+import { Text } from 'fluekit';
+import { TextStylePreset } from "@fluekit/presets";
 
 // Use directly in Text component
 <Text :style="TextStylePreset.titleLarge">Hello World</Text>
@@ -67,6 +68,19 @@ Used for long-form writing as it works well for small text sizes.
 
 ## iOS (Cupertino) Presets
 
+Access these presets via the `CupertinoTextStylePreset` class.
+
+```typescript
+import { Text } from 'fluekit';
+import { CupertinoTextStylePreset } from "@fluekit/presets";
+
+// Use directly
+<Text :style="CupertinoTextStylePreset.largeTitle">Large Title</Text>
+
+// Dark mode variant
+<Text :style="CupertinoTextStylePreset.dark.largeTitle">Dark Mode Large Title</Text>
+```
+
 Based on [Apple's Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/typography).
 
 | Preset        | Size | Weight   | Description                     |
@@ -82,5 +96,4 @@ Based on [Apple's Human Interface Guidelines](https://developer.apple.com/design
 | `footnote`    | 13pt | Normal   | Footnotes                       |
 | `caption1`    | 12pt | Normal   | Secondary text                  |
 | `caption2`    | 11pt | Normal   | Tertiary text                   |
-| `action`      | 17pt | Normal   | Actionable text (Blue)          |
-| `actionSmall` | 15pt | Normal   | Small actionable text (Blue)    |
+

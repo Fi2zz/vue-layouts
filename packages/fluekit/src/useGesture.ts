@@ -1,4 +1,4 @@
-import { CSSProperties, PropType, SetupContext, inject, provide, ref } from "vue";
+import { CSSProperties, PropType, SetupContext, inject, provide, ref, onUnmounted } from "vue";
 
 const GESTURE_HANDLED = Symbol("gesture_handled");
 
@@ -29,19 +29,22 @@ export const events = [
   "pan-start",
   "pan-update",
   "pan-end",
+  "pressed",
 ];
-
 export type GestureBehavior = PropType<Behavior>;
-
 export function useGestures({ emit }: SetupContext) {
   const lastClickTime = ref(0);
   const longPressTimer = ref<number | null>(null);
   const isPanning = ref(false);
   const startPos = ref({ x: 0, y: 0 });
   const lastPos = ref({ x: 0, y: 0 });
+  
+  // 标记事件监听器是否已添加
+  let mouseListenersAttached = false;
 
   const callbacks = {
     onTap: () => emit("tap"),
+    onPressed: () => emit("pressed"),
     onClick: (event: MouseEvent) => emit("click", event),
     onDoubleTap: () => emit("double-tap"),
     onLongPress: () => emit("long-press"),
@@ -61,6 +64,7 @@ export function useGestures({ emit }: SetupContext) {
       callbacks.onDoubleTap?.();
       lastClickTime.value = 0; // 重置
     } else {
+      callbacks.onPressed?.();
       callbacks.onTap?.();
       callbacks.onClick?.(e);
       lastClickTime.value = now;
@@ -75,8 +79,12 @@ export function useGestures({ emit }: SetupContext) {
     startLongPressTimer();
     startPan(e.clientX, e.clientY);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    // 避免重复添加事件监听器
+    if (!mouseListenersAttached) {
+      mouseListenersAttached = true;
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    }
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -90,8 +98,11 @@ export function useGestures({ emit }: SetupContext) {
   const handleMouseUp = () => {
     clearLongPressTimer();
     endPan();
-    window.removeEventListener("mousemove", handleMouseMove);
-    window.removeEventListener("mouseup", handleMouseUp);
+    if (mouseListenersAttached) {
+      mouseListenersAttached = false;
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    }
   };
 
   // Touch 处理
@@ -180,6 +191,24 @@ export function useGestures({ emit }: SetupContext) {
       callbacks.onPanEnd?.();
     }
   };
+
+  // ✅ 组件卸载时清理所有资源，防止内存泄漏
+  onUnmounted(() => {
+    // 清理长按定时器
+    clearLongPressTimer();
+    
+    // 移除鼠标事件监听器
+    if (mouseListenersAttached) {
+      mouseListenersAttached = false;
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    }
+    
+    // 重置所有状态
+    isPanning.value = false;
+    startPos.value = { x: 0, y: 0 };
+    lastPos.value = { x: 0, y: 0 };
+  });
 
   // 返回需要绑定的事件处理器
   return {

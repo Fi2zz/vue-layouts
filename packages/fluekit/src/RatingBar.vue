@@ -16,7 +16,8 @@
 import { computed, ref, type CSSProperties } from "vue";
 import { Icons } from "./Icons";
 import Icon from "./Icon.vue";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 
 interface Props {
   modelValue: number;

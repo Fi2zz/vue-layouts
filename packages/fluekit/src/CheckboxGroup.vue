@@ -22,7 +22,6 @@ const emit = defineEmits<{
   (e: "update:value", value: T[]): void;
   (e: "change", value: T[]): void;
 }>();
-
 const updateValue = (val: T) => {
   const newValues = [...props.value];
   const index = newValues.indexOf(val);
@@ -34,12 +33,6 @@ const updateValue = (val: T) => {
   emit("update:value", newValues);
   emit("change", newValues);
 };
-
 const { value, disabled } = toRefs(props);
-
-provide(CheckboxGroupKey, {
-  value,
-  disabled,
-  updateValue,
-});
+provide(CheckboxGroupKey, { value, disabled, updateValue });
 </script>

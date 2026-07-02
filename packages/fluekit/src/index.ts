@@ -29,7 +29,6 @@ export { default as SizedBox } from "./SizedBox.vue";
 export { default as Stack } from "./Stack.vue";
 export { default as Sticky } from "./Sticky.vue";
 export { default as Text } from "./Text.vue";
-export { default as TextArea } from "./TextArea.vue";
 export {
   default as LiquidGlassDialog,
   type LiquidGlassDialogAction,
@@ -64,6 +63,8 @@ export { default as BottomSheet } from "./BottomSheet.vue";
 export { default as SegmentedControl } from "./SegmentedControl.vue";
 export { default as Builder } from "./Builder.vue";
 export { default as LayoutBuilder } from "./LayoutBuilder.vue";
+export { default as LayoutProvider } from "./LayoutProvider.vue";
+export * from "./useLayout";
 export { default as MediaQuery } from "./MediaQuery.vue";
 export { default as CupertinoPageScaffold } from "./CupertinoPageScaffold.vue";
 export { default as CupertinoNavigationBar } from "./CupertinoNavigationBar.vue";
@@ -78,6 +79,7 @@ export { default as ImageColorBackground } from "./ImageColorBackground.vue";
 export { default as LinearProgressIndicator } from "./LinearProgressIndicator.vue";
 export { default as CircularProgressIndicator } from "./CircularProgressIndicator.vue";
 export { default as CupertinoActivityIndicator } from "./CupertinoActivityIndicator.vue";
+export { default as CupertinoTextField } from "./CupertinoTextField.vue";
 export { default as Drawer } from "./Drawer.vue";
 export { default as ElevatedButton } from "./ElevatedButton.vue";
 export { default as TextButton } from "./TextButton.vue";
@@ -107,8 +109,6 @@ export * from "./Color";
 export * from "./ImageUtils";
 export * from "./Colors";
 export * from "./CupertinoColors";
-export * from "./TextStylePreset";
-export * from "./ButtonStylePreset";
 export * from "./Border";
 export * from "./BoxConstraints";
 export * from "./BoxDecoration";

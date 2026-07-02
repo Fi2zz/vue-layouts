@@ -1,6 +1,4 @@
-import { CupertinoColors } from "./CupertinoColors";
-import { Colors } from "./Colors";
-import { FontWeight, TextStyle } from "./TextStyle";
+import { CupertinoColors, Colors, FontWeight, TextStyle } from "fluekit";
 
 /**
  * 文本样式预设

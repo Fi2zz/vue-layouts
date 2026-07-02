@@ -8,7 +8,8 @@
 
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 import { usePositionStyle } from "./usePosition";
 defineOptions({ inheritAttrs: false });
 interface Props {

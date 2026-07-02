@@ -1,12 +1,15 @@
-import { ButtonStyle } from "./ButtonStyle";
-import { Colors } from "./Colors";
-import { CupertinoColors } from "./CupertinoColors";
-import { EdgeInsets } from "./EdgeInsets";
-import { BorderRadius } from "./BorderRadius";
+import {
+  ButtonStyle,
+  Colors,
+  CupertinoColors,
+  EdgeInsets,
+  BorderRadius,
+  BorderSide,
+  Alignment,
+  FontWeight,
+  TextStyle,
+} from "fluekit";
 import { TextStylePreset } from "./TextStylePreset";
-import { BorderSide } from "./Border";
-import { Alignment } from "./Alignment";
-import { FontWeight, TextStyle } from "./TextStyle";
 
 export class ButtonStylePreset {
   // ==========================================================================

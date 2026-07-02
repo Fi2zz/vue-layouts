@@ -12,7 +12,8 @@ import {
   type CopyWith,
   PropsWithCopyWith,
 } from "./utils";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 // import { build } from "vite";
 /**
  * 字体粗细枚举，对应 Flutter 的 FontWeight
@@ -185,7 +186,7 @@ const defaults: TextStyle = {
 
 export function textStyleToStyle(props: TextStyleProps = defaults): CSSProperties {
   const cssStyle: CSSProperties = {
-    lineHeight: `var(--flue-line-height, normal)`,
+    lineHeight: `var(--fluekit-line-height, normal)`,
   };
   // 基础重置
   cssStyle.margin = 0;

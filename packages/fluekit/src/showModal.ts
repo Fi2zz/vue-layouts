@@ -26,13 +26,7 @@ export const showModal = (options: ModalOptions) => {
   };
 
   const renderComponent = (visible: boolean) => {
-    const {
-      content,
-      contentProps,
-      onClose: _onClose,
-      onAfterClose: _onAfterClose,
-      ...modalProps
-    } = options;
+    const { content, contentProps, onClose: _onClose, onAfterClose: _onAfterClose, ...modalProps } = options;
 
     let defaultSlot: () => any;
     if (typeof content === "string") {

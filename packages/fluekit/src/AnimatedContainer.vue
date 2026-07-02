@@ -1,7 +1,6 @@
 <template>
-  <Container v-bind="$props"> <slot></slot> </Container>
+  <Container v-bind="q"> <slot></slot> </Container>
 </template>
-
 <script setup lang="ts">
 defineOptions({ inheritAttrs: false });
 import { computed } from "vue";
@@ -18,6 +17,10 @@ const props = withDefaults(defineProps<Props>(), {
   curve: "linear",
 });
 
+const q = computed(() => {
+  const { duration, curve, ...other } = props;
+  return other;
+});
 const transition = computed(() => ({ transition: `all ${props.duration}ms ${props.curve}` }));
 provideTransiationStyle(transition);
 </script>

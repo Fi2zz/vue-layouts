@@ -6,7 +6,7 @@
       :style="
         TextStyle({
           color: 'blue',
-          fontWeight: 'bold',
+          fontWeight: FontWeight.bold,
           fontSize: 20,
         })
       "
@@ -40,8 +40,18 @@
         })
       "
     />
+    
+    <SizedBox :height="20" />
+    <Text data="Cupertino Presets" :style="TextStyle({ fontSize: 20, fontWeight: FontWeight.bold })" />
+    <SizedBox :height="10" />
+    <Text data="Large Title" :style="CupertinoTextStylePreset.largeTitle" />
+    <Text data="Title 1" :style="CupertinoTextStylePreset.title1" />
+    <Text data="Headline" :style="CupertinoTextStylePreset.headline" />
+    <Text data="Body" :style="CupertinoTextStylePreset.body" />
+    <Text data="Caption 1" :style="CupertinoTextStylePreset.caption1" />
   </Column>
 </template>
 <script setup lang="ts">
-import { Text, Column, FontStyle, TextDecoration, TextDecorationStyle, TextStyle } from "fluekit";
+import { Text, Column, FontStyle, TextDecoration, TextDecorationStyle, TextStyle, FontWeight, SizedBox } from "fluekit";
+import { CupertinoTextStylePreset } from "@fluekit/presets";
 </script>

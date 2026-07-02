@@ -1,18 +1,19 @@
 <template>
   <Column :gap="20">
     <Text>Auto height TextArea</Text>
-    <TextArea
+    <TextField
       v-model="content"
       auto-grow
       :max-lines="8"
-      :decoration="{ labelText: 'Description', border: OutlineInputBorder() }"
+      type="multiline"
+      :decoration="InputDecoration({ labelText: 'Description', border: OutlineInputBorder() })"
     />
     <Text>Length: {{ content.length }}</Text>
   </Column>
 </template>
 
 <script setup lang="ts">
+import { Column, InputDecoration, OutlineInputBorder, Text, TextField } from "fluekit";
 import { ref } from "vue";
-import { Column, Text, TextArea, OutlineInputBorder } from "fluekit";
 const content = ref("");
 </script>

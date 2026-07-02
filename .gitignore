@@ -134,3 +134,4 @@ Thumbs.db
 .kimi
 .pnpm-store
 .vitepress/cache/*
+packages/fluekit-liquid

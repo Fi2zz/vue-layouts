@@ -35,7 +35,8 @@ import { BoxDecoration } from "./BoxDecoration";
 import { BorderRadius } from "./BorderRadius";
 import { Border } from "./Border";
 import { CheckboxGroupKey } from "./CheckboxTypes";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 
 export interface CheckboxProps<T> {
   value?: T;

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Upload, Button, Column, Text, type UploadFile, ButtonStylePreset } from "fluekit";
+import { Upload, Button, Column, Text, type UploadFile } from "fluekit";
+import { ButtonStylePreset } from "@fluekit/presets";
 import { ref } from "vue";
 
 const fileList = ref<UploadFile[]>([]);

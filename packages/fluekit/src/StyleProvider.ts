@@ -13,11 +13,17 @@ import {
   type InjectionKey,
   type PropType,
   type VNode,
+  getCurrentInstance,
+  ComponentInternalInstance,
 } from "vue";
 import { isHtmlTag } from "./utils";
 
-const StyleInjectionKey: InjectionKey<ComputedRef<CSSProperties>> =
-  Symbol("fluekit-style-provider");
+const StyleInjectionKey: InjectionKey<
+  ComputedRef<{
+    style: CSSProperties;
+    provider: ComponentInternalInstance | null;
+  }>
+> = Symbol("fluekit-style-provider");
 
 const Injector = defineComponent({
   name: "Injector",
@@ -29,19 +35,21 @@ const Injector = defineComponent({
     },
   },
   setup(props, { slots }) {
-    provide(
-      StyleInjectionKey,
-      computed(() => props.style),
-    );
+    // provide(
+    //   StyleInjectionKey,
+    //   computed(() => props.style),
+    // );
     return () => slots.default?.() || null;
   },
 });
 
 export function useStyles() {
-  return inject(
+  const instance = getCurrentInstance();
+  const injected = inject(
     StyleInjectionKey,
-    computed(() => ({})),
+    computed(() => ({ provider: null, style: {} })),
   );
+  return computed(() => (injected.value?.provider == instance?.parent ? injected.value.style : {}));
 }
 
 export const StyleProvider = defineComponent({
@@ -57,40 +65,11 @@ export const StyleProvider = defineComponent({
     },
   },
   setup(props, { slots }) {
-    return () => {
-      const children = slots.default?.() ?? [];
-      if (children.length <= 0) return null;
-
-      return cloneAndMergeStyles(children, props.style, props.attrs);
-    };
+    const instance = getCurrentInstance();
+    provide(
+      StyleInjectionKey,
+      computed(() => ({ style: props.style ?? {}, provider: instance })),
+    );
+    return () => slots.default?.() || null;
   },
 });
-
-function cloneAndMergeStyles(
-  nodes: VNode[],
-  style: CSSProperties,
-  attrs: Record<string, any>,
-): VNode[] {
-  return nodes.map((node: VNode) => {
-    if (!node) return node;
-
-    // Handle Fragment: recurse
-    if (node.type === Fragment) {
-      if (Array.isArray(node.children)) {
-        return h(Fragment, cloneAndMergeStyles(node.children as VNode[], style, attrs));
-      }
-      return node;
-    }
-
-    if (node.type === Comment) return node;
-    if (node.type === Text) return node;
-    // Handle Element/Component
-    if (isHtmlTag(node)) {
-      const _style = node.props?.style || {};
-      return cloneVNode(node, {
-        style: { ..._style, ...style },
-      });
-    }
-    return h(Injector, { ...attrs, style: style }, { default: () => node });
-  });
-}

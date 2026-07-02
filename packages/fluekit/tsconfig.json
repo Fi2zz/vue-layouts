@@ -7,7 +7,8 @@
     "baseUrl": ".",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@fluekit/presets": ["../fluekit-presets/src/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": false,

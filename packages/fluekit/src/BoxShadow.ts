@@ -1,6 +1,7 @@
 import { px2vw } from "./px2vw";
 import { isPlainObject } from "./utils";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 
 export interface Offset {
   x: number;

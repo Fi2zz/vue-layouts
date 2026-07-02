@@ -1,22 +1,36 @@
 <template>
   <Column :gap="20">
-    <Text :style="TextStyle({ fontWeight: FontWeight.bold })">Default (iOS)</Text>
+    <Text :style="TextStyle({ fontWeight: FontWeight.bold })">Cupertino Presets</Text>
+
+    <Text>Plain</Text>
     <Row :gap="20">
-      <Button variant="ios" @pressed="onPressed">
-        <Text :style="TextStyle({ color: '#007AFF' })">Button</Text>
-      </Button>
-      <Button variant="ios" @pressed="onPressed" disabled>
-        <Text :style="TextStyle({ color: '#007AFF' })">Disabled</Text>
+      <Button :style="CupertinoButtonStylePreset.plain" @pressed="onPressed"> Button </Button>
+      <Button :style="CupertinoButtonStylePreset.plain" @pressed="onPressed" disabled>
+        Disabled
       </Button>
     </Row>
 
-    <Text :style="TextStyle({ fontWeight: FontWeight.bold })">Filled (iOS)</Text>
+    <Text>Filled</Text>
     <Row :gap="20">
-      <Button variant="ios" color="#007AFF" @pressed="onPressed">
-        <Text :style="TextStyle({ color: 'white' })">Button</Text>
+      <Button :style="CupertinoButtonStylePreset.filled" @pressed="onPressed"> Button </Button>
+      <Button :style="CupertinoButtonStylePreset.filled" @pressed="onPressed" disabled>
+        Disabled
       </Button>
-      <Button variant="ios" color="#007AFF" @pressed="onPressed" disabled>
-        <Text :style="TextStyle({ color: 'white' })">Disabled</Text>
+    </Row>
+
+    <Text>Tinted</Text>
+    <Row :gap="20">
+      <Button :style="CupertinoButtonStylePreset.tinted" @pressed="onPressed"> Button </Button>
+      <Button :style="CupertinoButtonStylePreset.tinted" @pressed="onPressed" disabled>
+        Disabled
+      </Button>
+    </Row>
+
+    <Text>Destructive</Text>
+    <Row :gap="20">
+      <Button :style="CupertinoButtonStylePreset.destructive" @pressed="onPressed"> Delete </Button>
+      <Button :style="CupertinoButtonStylePreset.destructiveFilled" @pressed="onPressed">
+        Delete
       </Button>
     </Row>
     <Text>Count: {{ count }}</Text>
@@ -26,6 +40,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Column, Row, Text, Button, FontWeight, TextStyle } from "fluekit";
+import { CupertinoButtonStylePreset } from "@fluekit/presets";
 
 const count = ref(0);
 const onPressed = () => {

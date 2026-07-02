@@ -25,8 +25,45 @@ import { LayoutBuilder, Text, TextStyle } from "fluekit";
 
 <LayoutBuilderDemo />
 
+## LayoutProvider & useLayout
+
+You can also use the `provide/inject` pattern to access layout constraints deep in the component tree without passing props.
+
+### Usage
+
+```vue
+<script setup>
+import { LayoutProvider, useLayout, Text } from "fluekit";
+import MyChildComponent from "./MyChildComponent.vue";
+</script>
+
+<template>
+  <LayoutProvider>
+    <MyChildComponent />
+  </LayoutProvider>
+</template>
+```
+
+In `MyChildComponent.vue`:
+
+```vue
+<script setup>
+import { useLayout } from "fluekit";
+const constraints = useLayout();
+</script>
+
+<template>
+  <div>Width: {{ constraints?.maxWidth }}</div>
+</template>
+```
+
+### LayoutProvider Demo
+
+<LayoutProviderDemo />
+
 <script setup>
 import LayoutBuilderDemo from '../demos/new_components/LayoutBuilderDemo.vue';
+import LayoutProviderDemo from '../demos/new_components/LayoutProviderDemo.vue';
 </script>
 
 ## API

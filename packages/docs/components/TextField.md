@@ -1,15 +1,13 @@
-# TextField & TextArea
+# TextField
 
 Material Design text fields that allow users to enter text.
 
 <script setup>
 import BasicTextField from '@example/demos/textfield/BasicTextField.vue'
-import TextAreaDemo from '@example/demos/textfield/TextAreaDemo.vue'
 import Borders from '@example/demos/textfield/Borders.vue'
 import PrefixSuffix from '@example/demos/textfield/PrefixSuffix.vue'
 import IconsDemo from '@example/demos/textfield/IconsDemo.vue'
 import Filled from '@example/demos/textfield/Filled.vue'
-
 import States from '@example/demos/textfield/States.vue'
 import AutoGrow from '@example/demos/textfield/AutoGrow.vue'
 import NoLabel from '@example/demos/textfield/NoLabel.vue'
@@ -32,16 +30,6 @@ TextField without a floating label, relying on hintText or layout context.
 </div>
 
 <<< ../demos/textfield/NoLabel.vue
-
-## TextArea (Multi-line)
-
-You can use the `TextArea` component for multi-line input, or `TextField` with `maxLines` > 1.
-
-<div class="demo-box">
-  <TextAreaDemo />
-</div>
-
-<<< ../demos/textfield/TextAreaDemo.vue
 
 ## Borders
 
@@ -114,14 +102,7 @@ Multi-line input can automatically adjust its height based on content by setting
 | enabled            | `boolean`         | `true`  | Whether the text field is enabled.                                                        |
 | readOnly           | `boolean`         | `false` | Whether the text can be changed.                                                          |
 | style              | `TextStyle`       | -       | The style to use for the text being edited.                                               |
-
-### TextArea
-
-Wrapper around TextField with default `maxLines` and `keyboardType`.
-
-| Prop     | Type     | Default | Description    |
-| -------- | -------- | ------- | -------------- |
-| maxLines | `number` | `4`     | Default lines. |
+| maxLines           | `number`          | -       | Default lines.                                                                            |
 
 ### InputDecoration
 

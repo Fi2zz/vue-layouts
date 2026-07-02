@@ -85,7 +85,8 @@ import { Colors } from "./Colors";
 import type { EdgeInsets } from "./EdgeInsets";
 import type { BoxDecoration } from "./BoxDecoration";
 import type { TextStyle } from "./TextStyle";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 import { Clip } from "./Clip";
 
 defineOptions({ inheritAttrs: false });

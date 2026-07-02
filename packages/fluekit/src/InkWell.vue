@@ -9,7 +9,8 @@
 
 <script setup lang="ts">
 import { computed, ref, type CSSProperties } from "vue";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 defineOptions({ inheritAttrs: false });
 interface Props {
   splashColor?: string | Color;

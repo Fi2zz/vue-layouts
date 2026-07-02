@@ -34,22 +34,21 @@
         <!-- Input Element Wrapper -->
         <div :style="inputWrapperStyle">
           <!-- Custom Placeholder -->
-          <div v-if="!modelValue && placeholderText" :style="placeholderStyle">
+          <div v-if="showPlaceholder" :style="placeholderStyle">
             {{ placeholderText }}
           </div>
           <!-- Input Element -->
           <component
             :is="isMultiline ? 'textarea' : 'input'"
             ref="inputRef"
-            :value="modelValue"
-            :disabled="!enabled"
+            :value="model"
+            :disabled="disabled"
             :readonly="readOnly"
             :type="inputType"
             :rows="minLines || 1"
             :style="finalInputStyle"
             :maxlength="maxLength"
             :autocapitalize="textCapitalization"
-            :enterkeyhint="textInputAction"
             :autocorrect="autocorrect ? 'on' : 'off'"
             :autocomplete="autocomplete"
             @input="handleInput"
@@ -98,7 +97,8 @@ import {
 } from "vue";
 import { BorderSide, borderSideToStyle } from "./Border";
 import { BorderRadius, borderRadiusToStyle } from "./BorderRadius";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 import { isEdgeInsets, paddingToStyle } from "./EdgeInsets";
 import {
   FloatingLabelBehavior,
@@ -112,15 +112,15 @@ import { boxConstraintsToStyle } from "./BoxConstraints";
 import Icon from "./Icon.vue";
 import { validateInDev } from "./utils";
 defineOptions({ inheritAttrs: false });
-interface TextFieldProps {
-  modelValue?: string | number;
+export interface TextFieldProps {
+  // modelValue?: string | number;
   decoration?: InputDecoration;
   enabled?: boolean;
   readOnly?: boolean;
   obscureText?: boolean;
   maxLines?: number | null; // 1 = input, >1 or null = textarea
   minLines?: number;
-  keyboardType?: string; // 'text', 'number', 'email', 'multiline', etc.
+  type?: "text" | "number" | "password" | "email" | "multiline"; // 'text', 'number', 'email', 'multiline', etc.
   style?: TextStyle; // Text style
   cursorColor?: string | Color;
   autofocus?: boolean;
@@ -132,11 +132,19 @@ interface TextFieldProps {
   autocorrect?: boolean;
   modelModifiers?: Record<string, boolean>;
   autocomplete?: string;
+  disabled?: boolean;
 }
 
+export type TextFieldEmits = {
+  (e: "change", value: string | number): void;
+  (e: "focus", event: FocusEvent): void;
+  (e: "blur", event: FocusEvent): void;
+  (e: "submit", value: string): void;
+};
+
 const props = withDefaults(defineProps<TextFieldProps>(), {
-  modelValue: "",
   enabled: true,
+  disabled: false,
   readOnly: false,
   obscureText: false,
   maxLines: 1,
@@ -146,6 +154,7 @@ const props = withDefaults(defineProps<TextFieldProps>(), {
   modelModifiers: () => ({}),
   autocomplete: "off",
 });
+const [model, modifiers] = defineModel<string | number>({ default: () => "" });
 
 const slots = useSlots();
 
@@ -154,19 +163,24 @@ validateInDev(() => {
     console.warn("TextField: decoration must be an instance of InputDecoration");
   }
 });
-
-const emit = defineEmits<{
-  (e: "update:modelValue", value: string | number): void;
-  (e: "focus", event: FocusEvent): void;
-  (e: "blur", event: FocusEvent): void;
-  (e: "submit", value: string): void;
-}>();
-
+const emit = defineEmits<TextFieldEmits>();
 const inputRef = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
 const isFocused = ref(false);
 const prefixRef = ref<HTMLElement | null>(null);
 const prefixWidth = ref(0);
 let _ro: ResizeObserver | null = null;
+
+const hasValue = computed(() => {
+  return (
+    model.value != null && typeof model.value !== "undefined" && `${model.value}`.trim().length > 0
+  );
+});
+
+const showPlaceholder = computed(() => {
+  if (hasValue.value) return false;
+  return !isFocused.value;
+});
+
 const _autoGrow = () => {
   const el = inputRef.value as HTMLTextAreaElement | null;
   if (!el || !isMultiline.value) return;
@@ -211,26 +225,20 @@ onBeforeUnmount(() => {
 });
 
 const isMultiline = computed(() => {
-  return props.maxLines === null || props.maxLines > 1 || props.keyboardType === "multiline";
+  return props.maxLines! > 1 || props.type === "multiline";
 });
 
 const inputType = computed(() => {
   if (isMultiline.value) return undefined; // textarea doesn't need type
   if (props.obscureText) return "password";
-  return props.keyboardType === "number" ? "number" : "text"; // Simplified
+  return modifiers.number ? "number" : "text"; // Simplified
 });
 
 const isFloating = computed(() => {
   const behavior = props.decoration?.floatingLabelBehavior || FloatingLabelBehavior.auto;
-
   if (behavior === FloatingLabelBehavior.never) return false;
   if (behavior === FloatingLabelBehavior.always) return true;
-
-  // Auto behavior
-  return (
-    isFocused.value ||
-    (props.modelValue !== "" && props.modelValue !== null && props.modelValue !== undefined)
-  );
+  return isFocused.value || hasValue.value;
 });
 
 const shouldShowLabel = computed(() => {
@@ -248,12 +256,7 @@ const shouldShowLabel = computed(() => {
   // If never, it stays inline. If content exists, it must disappear to avoid overlap.
 
   if (props.decoration?.floatingLabelBehavior === FloatingLabelBehavior.never) {
-    const hasContent =
-      props.modelValue !== "" && props.modelValue !== null && props.modelValue !== undefined;
-    if (hasContent) return false;
-    // Also if focused, we usually want to type, so label should disappear?
-    // In Material 3, 'never' behaves like a placeholder.
-    if (isFocused.value) return false;
+    if (hasValue.value && !isFocused.value) return false;
   }
   return true;
 });
@@ -264,14 +267,17 @@ const placeholderText = computed(() => {
   return props.decoration?.hintText || "";
 });
 
-function doAutoGrow() {
-  nextTick(_autoGrow);
+async function doAutoGrow() {
+  await nextTick();
+  _autoGrow();
 }
-watch(() => props.modelValue, doAutoGrow);
+watch(() => model.value, doAutoGrow);
 watch(isMultiline, (v) => v && nextTick(_autoGrow));
 watch(() => props.maxLines, doAutoGrow);
 watch(() => props.minLines, doAutoGrow);
 watch(() => props.autoGrow, doAutoGrow);
+
+const disabled = computed(() => props.disabled || !props.enabled);
 
 // Styles
 const currentBorder = computed<InputBorder | undefined>(() => {
@@ -284,9 +290,9 @@ const currentBorder = computed<InputBorder | undefined>(() => {
     }
   }
 
-  if (!props.enabled && props.decoration?.disabledBorder) return props.decoration.disabledBorder;
+  if (disabled.value && props.decoration?.disabledBorder) return props.decoration.disabledBorder;
   if (isFocused.value && props.decoration?.focusedBorder) return props.decoration.focusedBorder;
-  if (props.enabled && props.decoration?.enabledBorder) return props.decoration.enabledBorder;
+  if (!disabled.value && props.decoration?.enabledBorder) return props.decoration.enabledBorder;
   return props.decoration?.border; // Default fallback
 });
 
@@ -300,7 +306,7 @@ const helperText = computed(() => {
   return props.decoration?.helperText;
 });
 const counterText = computed(() => {
-  return props.decoration?.counterText || `${String(props.modelValue).length} / ${props.maxLength}`;
+  return props.decoration?.counterText || `${String(model.value).length} / ${props.maxLength}`;
 });
 
 const showError = computed(() => {
@@ -597,36 +603,17 @@ const shouldShowFooter = computed(() => {
   );
 });
 
-// Events
-const emitValue = (value: string | number) => {
-  if (props.modelModifiers?.trim && typeof value === "string") {
-    value = value.trim();
-  }
-  if (props.modelModifiers?.number) {
-    const n = parseFloat(value as string);
-    if (!isNaN(n)) {
-      value = n;
-    }
-  }
-  emit("update:modelValue", value);
-};
-
 const handleInput = (e: Event) => {
   const target = e.target as HTMLInputElement;
   nextTick(_autoGrow);
-
-  if (!props.modelModifiers?.lazy) {
-    emitValue(target.value);
-  }
+  if (!modifiers.lazy) model.value = target.value;
 };
 
 const handleChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
-  if (props.modelModifiers?.lazy) {
-    emitValue(target.value);
-  }
+  emit("change", target.value);
+  if (!modifiers.lazy) model.value = target.value;
 };
-
 const handleFocus = (e: FocusEvent) => {
   isFocused.value = true;
   emit("focus", e);

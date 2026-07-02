@@ -29,7 +29,8 @@
 <script setup lang="ts">
 import { computed, type CSSProperties, onMounted, ref, watch, onBeforeUnmount } from "vue";
 import { Colors } from "./Colors";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 
 interface Props {
   /**

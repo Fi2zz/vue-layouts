@@ -18,7 +18,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.6.2",
   "dependencies": {
-    "fluekit": "workspace:*"
+    "fluekit": "workspace:*",
+    "@fluekit/presets": "workspace:^"
   },
   "devDependencies": {
     "vitepress": "^1.6.4",

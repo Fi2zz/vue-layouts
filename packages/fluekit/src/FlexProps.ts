@@ -48,6 +48,32 @@ export const MainAxisSize = {
 } as const;
 
 export type MainAxisSize = Valueof<typeof MainAxisSize> | string;
+
+/**
+ * AlignContent
+ * 对应 CSS alignContent
+ */
+export const AlignContent = {
+  start: "start",
+  end: "end",
+  center: "center",
+  spaceBetween: "space-between",
+  spaceAround: "space-around",
+  spaceEvenly: "space-evenly",
+  stretch: "stretch",
+} as const;
+
+export type AlignContent = Valueof<typeof AlignContent> | string;
+
+export const FlexDirectionMap = {
+  horizontal: "row",
+  vertical: "column",
+} as const;
+
+export function alignContentToStyle(alignContent: AlignContent) {
+  return FlexAlignContentMap[alignContent] || alignContent;
+}
+
 export type FlexBoxProps = {
   // 主轴方向 (类似 Flutter 的 Axis)
   direction?: "row" | "column" | "row-reverse" | "column-reverse" | string;
@@ -65,7 +91,6 @@ export type FlexBoxProps = {
 };
 
 type Preset = Record<string, string>;
-
 // 主轴对齐映射: 简写 -> CSS Value
 export const FlexBoxJustifyMap: Preset = {
   start: "flex-start",
@@ -74,6 +99,16 @@ export const FlexBoxJustifyMap: Preset = {
   "space-between": "space-between",
   "space-around": "space-around",
   "space-evenly": "space-evenly",
+};
+
+export const FlexAlignContentMap: Preset = {
+  start: "flex-start",
+  end: "flex-end",
+  center: "center",
+  "space-between": "space-between",
+  "space-around": "space-around",
+  "space-evenly": "space-evenly",
+  stretch: "stretch",
 };
 
 // 交叉轴对齐映射: 简写 -> CSS Value
@@ -102,7 +137,6 @@ import { px2vw } from "./px2vw";
 export function flexBoxToStyle(props: FlexBoxProps) {
   const mainAxisAlignment = props.mainAxisAlignment as unknown as string;
   const crossAxisAlignment = props.crossAxisAlignment as unknown as string;
-
   const style: CSSProperties = {
     display: "flex",
     flexDirection: props.direction as CSSProperties["flexDirection"],
@@ -110,7 +144,17 @@ export function flexBoxToStyle(props: FlexBoxProps) {
     justifyContent: FlexBoxJustifyMap[mainAxisAlignment],
     alignItems: FlexBoxAlignMap[crossAxisAlignment] || crossAxisAlignment,
   };
-  if (typeof props.gap !== "undefined" && props.gap != null) style.gap = px2vw(props.gap);
+  if (typeof props.gap !== "undefined" && props.gap != null) {
+    if (typeof props.gap === "string") {
+      style.gap = props.gap
+        .trim()
+        .split(" ")
+        .map((n) => px2vw(n))
+        .join(" ");
+    } else {
+      style.gap = px2vw(props.gap);
+    }
+  }
   return style;
 }
 

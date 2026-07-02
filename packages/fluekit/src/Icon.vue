@@ -31,7 +31,8 @@
 <script setup lang="ts">
 import { computed, type Component, type CSSProperties } from "vue";
 import { px2vw } from "./px2vw";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 
 defineOptions({ inheritAttrs: false });
 

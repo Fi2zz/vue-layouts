@@ -6,7 +6,8 @@ import { EdgeInsets, paddingToStyle } from "./EdgeInsets";
 import { SizeType, sizeToStyle } from "./Size";
 import { px2vw } from "./px2vw";
 import { TextAlign, TextStyle, textStyleToStyle } from "./TextStyle";
-import { Color, resolveColor } from "./Color";
+import { Color } from "./Color";
+import { resolveColor } from "./resolveColor";
 import { createCopyWith, PropsWithCopyWith } from "./utils";
 
 const STYLE_SYMBOL = Symbol("ButtonStyle");
@@ -14,6 +15,7 @@ const STYLE_SYMBOL = Symbol("ButtonStyle");
 export interface ButtonStyleProps {
   textStyle?: TextStyle;
   backgroundColor?: string | Color;
+  color?: string | Color;
   foregroundColor?: string | Color; // 文本颜色
   overlayColor?: string | Color; // 暂未实现水波纹，保留接口
   shadowColor?: string | Color;
@@ -48,6 +50,7 @@ export function buttonStyleToStyle(style?: Omit<ButtonStyle, "copyWith">): CSSPr
   if (style.textStyle) Object.assign(css, textStyleToStyle(style.textStyle));
   if (style.textAlign) css.textAlign = style.textAlign;
   if (style.backgroundColor) css.backgroundColor = resolveColor(style.backgroundColor);
+  if (style.color) css.color = resolveColor(style.color);
   if (style.foregroundColor) css.color = resolveColor(style.foregroundColor);
   if (style.padding) Object.assign(css, paddingToStyle(style.padding));
   if (style.minimumSize) {

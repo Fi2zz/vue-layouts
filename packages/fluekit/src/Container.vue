@@ -16,7 +16,7 @@ import { CSSProperties } from "vue";
 import { alignmentToFlex, alignmentToOrigin } from "./Alignment";
 import { boxDecorationToStyle, Clip, isBoxDecoration } from "./BoxDecoration";
 import { clipBehaviorToStyle } from "./Clip";
-import { resolveColor } from "./Color";
+import { resolveColor } from "./resolveColor";
 import { ContainerProps } from "./ContainerProps";
 import { isEdgeInsets, marginToStyle, paddingToStyle } from "./EdgeInsets";
 import { sizeToStyle } from "./Size";
@@ -67,6 +67,7 @@ const validateProps = () => {
 
   // 5. assert(decoration must be created using BoxDecoration constructor)
   if (props.decoration && !isBoxDecoration(props.decoration)) {
+    console.log(props.decoration);
     console.warn(
       "[Container] decoration must be created using BoxDecoration constructor.\nExample: decoration=\"BoxDecoration({ color: 'red' })\"",
     );
